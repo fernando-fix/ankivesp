@@ -62,4 +62,14 @@ class User extends Authenticatable
     {
         return $this->roles->pluck('permissions')->flatten()->contains('slug', $permission);
     }
+
+    public function lessons()
+    {
+        return $this->belongsToMany(Lesson::class, 'watcheds');
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'subscriptions');
+    }
 }
