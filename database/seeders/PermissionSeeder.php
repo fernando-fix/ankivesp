@@ -26,7 +26,13 @@ class PermissionSeeder extends Seeder
         ['Associar papeis',         'Permite associar papeis'],
         ['Associar permissoes',     'Permite associar permissoes'],
         // LOGS
-        ['Visualizar Logs',         'Permite visualizar Logs']
+        ['Visualizar Logs',         'Permite visualizar Logs'],
+        // CURSOS
+        ['Visualizar Cursos',       'Permite visualizar Cursos'],
+        ['Cadastrar Cursos',        'Permite Cadastrar Cursos'],
+        ['Editar Cursos',           'Permite editar Cursos'],
+        ['Excluir Cursos',          'Permite excluir Cursos'],
+
     ];
 
     /**

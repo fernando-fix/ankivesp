@@ -1,8 +1,8 @@
-# Projeto Base para novos projetos
+# Projeto: ANKIVESP
 
 ## Descrição
 
-Projeto base para novos projetos, com a utilização opcional do vue nas páginas.
+Projeto para auxiliar no desempenho de absorção de conteúdos das aulas da UNIVESP, utilizando um sistema similar ao anki para revisão de questões referente às matérias.
 
 ## Tecnologias
 

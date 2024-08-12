@@ -19,6 +19,10 @@ class Lesson extends Model
     ];
 
     // Relationships
+    public function course()
+    {
+        return $this->hasOneThrough(Course::class, Module::class, 'id', 'id', 'module_id', 'course_id');
+    }
 
     public function module()
     {

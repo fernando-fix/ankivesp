@@ -14,7 +14,6 @@ class Course extends Model
         'name',
         'year',
         'semester',
-        'modules_count',
     ];
 
     // Relationships

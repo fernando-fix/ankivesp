@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'Sistema ERP',
+    'title' => 'AnkiVesp',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Sistema ERP</b>',
+    'logo' => '<b>AnkiVesp</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -418,6 +418,32 @@ return [
                 ],
             ]
         ],
+        [
+            'text' => 'Cursos',
+            'icon' => 'fas fa-graduation-cap',
+            'can' => 'visualizar_cursos',
+            'active' => ['courses/*'],
+            'submenu' => [
+                [
+                    'text' => 'Cursos',
+                    'url' => '/courses',
+                    'icon' => 'fas fa-graduation-cap',
+                    'can' => 'visualizar_cursos',
+                ],
+                [
+                    'text' => 'Módulos',
+                    'url' => '/modules',
+                    'icon' => 'fas fa-folder-open',
+                    'can' => 'visualizar_modulos',
+                ],
+                [
+                    'text' => 'Aulas',
+                    'url' => '/lessons',
+                    'icon' => 'fas fa-chalkboard-teacher',
+                    'can' => 'visualizar_aulas',
+                ],
+            ]
+        ]
         // ['header' => 'labels'],
         // [
         //     'text' => 'important',

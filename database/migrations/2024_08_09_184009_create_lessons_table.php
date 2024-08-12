@@ -17,8 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->enum('type', ['youtube', 'pdf', 'link']);
             $table->string('url'); // link ou url
-            $table->integer('position'); //ordem de exibição
+            $table->integer('position')->default(0); //ordem de exibição
             $table->timestamps();
+
+            // unique
+            $table->unique(['module_id', 'name']);
 
             // Foreign keys
             $table->foreign('module_id')->references('id')->on('modules');

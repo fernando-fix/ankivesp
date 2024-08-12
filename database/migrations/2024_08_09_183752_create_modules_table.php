@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('course_id');
             $table->string('name');
-            $table->integer('lessons_count');
-            $table->integer('position');
+            $table->integer('lessons_count')->default(0);
+            $table->integer('position')->default(0);
             $table->date('due_date')->nullable();
             $table->timestamps();
+
+            // unique
+            $table->unique(['course_id', 'name']);
 
             // Foreign keys
             $table->foreign('course_id')->references('id')->on('courses');
