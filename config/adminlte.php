@@ -422,7 +422,7 @@ return [
         [
             'text' => 'Cursos',
             'icon' => 'fas fa-graduation-cap',
-            'can' => 'visualizar_cursos',
+            'can' => ['visualizar_cursos', 'visualizar_modulos', 'visualizar_aulas'],
             'active' => ['courses/*'],
             'submenu' => [
                 [
