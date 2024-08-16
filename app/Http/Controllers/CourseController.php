@@ -148,14 +148,4 @@ class CourseController extends Controller
         LogAndFlash::warning('Sem permissão de acesso!');
         return redirect()->back();
     }
-
-    public function indexJson(Course $course)
-    {
-        if (Gate::allows('visualizar_cursos')) {
-            $courses = Course::get();
-            return response()->json($courses);
-        }
-        LogAndFlash::warning('Sem permissão de acesso!');
-        return response()->json(null, 403);
-    }
 }

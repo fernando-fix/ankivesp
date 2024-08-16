@@ -51,8 +51,6 @@ class LessonController extends Controller
             $data = $request->except(['_token', 'modal_trigger']);
             $errors = [];
 
-            // dd($data);
-
             try {
                 $lastPosition = Lesson::where('module_id', $data['module_id'])->max('position');
                 $data['position'] = $lastPosition + 1;
@@ -65,7 +63,7 @@ class LessonController extends Controller
             if (count($errors) == 0) {
                 DB::commit();
                 LogAndFlash::success('Registro criado com sucesso!', $lesson);
-                return redirect()->route('modules.index');
+                return redirect()->route('lessons.index');
             } else {
                 DB::rollBack();
                 LogAndFlash::error('Erro ao tentar criar o registro!', $errors);

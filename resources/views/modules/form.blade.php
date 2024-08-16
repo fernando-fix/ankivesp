@@ -21,7 +21,14 @@
             <option value="">Selecione</option>
             @foreach ($courses as $course)
                 <option value="{{ $course->id }}"
-                    {{ old('course_id', $module->course ?? '') == $course->id ? 'selected' : '' }}>{{ $course->name }}
+                    @if (old('course_id'))
+                        @if (old('course_id') == $course->id)
+                            selected
+                        @endif
+                    @elseif (isset($module->course_id) && $module->course_id == $course->id)
+                        selected
+                    @endif>
+                    {{ $course->name }}
                 </option>
             @endforeach
         </select>

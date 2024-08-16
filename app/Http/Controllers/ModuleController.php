@@ -169,4 +169,14 @@ class ModuleController extends Controller
         LogAndFlash::warning('Sem permissão de acesso!');
         return redirect()->back();
     }
+
+    public function indexJson(Course $course)
+    {
+        if (Gate::allows('visualizar_modulos')) {
+            $modules = Module::where('course_id', $course->id)->get(['id', 'name', 'position']);
+            return response()->json($modules);
+        }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return response()->json(null, 403);
+    }
 }

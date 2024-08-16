@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('roles', RoleController::class);
 
     Route::resource('courses', CourseController::class);
+    Route::get('api/modules/{course}', [ModuleController::class, 'indexJson'])->name('api.modules.index_json');
     Route::resource('modules', ModuleController::class);
     Route::resource('lessons', LessonController::class);
 });

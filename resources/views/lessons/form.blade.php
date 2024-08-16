@@ -21,7 +21,10 @@
             <option value="">Selecione</option>
             @foreach ($courses as $course)
                 <option value="{{ $course->id }}"
-                    {{ old('course_id', $module->course ?? '') == $course->id ? 'selected' : '' }}>{{ $course->name }}
+                    @if (old('course_id')) @if (old('course_id') == $course->id)
+                            selected @endif
+                @elseif (isset($lesson->module->course_id) && $lesson->module->course_id == $course->id) selected @endif>
+                    {{ $course->name }}
                 </option>
             @endforeach
         </select>
@@ -39,12 +42,23 @@
         <label for="module_id">Módulo</label>
         <select class="form-control @error('module_id') is-invalid @enderror" id="module_id" name="module_id"
             value="{{ old('module_id', $module->course ?? '') }}" required autocomplete="off">
-            <option value="">Selecione</option>
-            @foreach ($modules as $module)
-                <option value="{{ $module->id }}"
-                    {{ old('module_id', $module->course ?? '') == $module->id ? 'selected' : '' }}>{{ $module->name }}
-                </option>
-            @endforeach
+            @if (!isset($lesson))
+                <option value="">Escolha o curso primeiro</option>
+            @endif
+            @if (isset($lesson))
+                <option value="">Selecione</option>
+                @php
+                    $modules = $lesson->course->modules;
+                @endphp
+                @foreach ($modules as $module)
+                    <option value="{{ $module->id }}"
+                        @if (old('module_id')) @if (old('module_id') == $module->id)
+                            selected @endif
+                    @elseif (isset($lesson->module_id) && $lesson->module_id == $module->id) selected @endif>
+                        {{ $module->name }}
+                    </option>
+                @endforeach
+            @endif
         </select>
         @error('module_id')
             <span class="invalid-feedback" role="alert">
@@ -64,12 +78,12 @@
             <option value="youtube" {{ old('type', $lesson->type ?? '') == 'youtube' ? 'selected' : '' }}>
                 Vídeo do Youtube
             </option>
-            <option value="pdf" {{ old('type', $lesson->type ?? '') == 'pdf' ? 'selected' : '' }}>
+            {{-- <option value="pdf" {{ old('type', $lesson->type ?? '') == 'pdf' ? 'selected' : '' }}>
                 Arquivo PDF
             </option>
             <option value="link" {{ old('type', $lesson->type ?? '') == 'link' ? 'selected' : '' }}>
                 Link externo
-            </option>
+            </option> --}}
         </select>
         @error('type')
             <span class="invalid-feedback" role="alert">
@@ -94,7 +108,7 @@
 </div>
 
 {{-- File (PDF) --}}
-<div class="form-row">
+{{-- <div class="form-row">
     <div class="form-group col-12">
         <label for="file">Arquivo (PDF)</label>
         <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file">
@@ -104,7 +118,7 @@
             </span>
         @enderror
     </div>
-</div>
+</div> --}}
 
 
 @once
@@ -112,8 +126,37 @@
         <script>
             $('.modal').on('shown.bs.modal', function() {
                 var modal = $(this);
-                // mostrar qual é o modal que está sendo aberto
-                console.log(modal.attr('id'));
+                modal.find('#course_id').on('change', function() {
+                    let course_id = $(this).val();
+                    let url = "{{ route('api.modules.index_json', ':course_id') }}";
+                    url = url.replace(':course_id', course_id);
+
+                    $.ajax({
+                        url: url,
+                        type: "GET",
+                        data: {
+                            course_id: course_id
+                        },
+                        success: function(response) {
+                            modal.find('#module_id').empty();
+                            // se a resposta for vazia
+                            if (response.length > 0) {
+                                modal.find('#module_id').append(
+                                    '<option value="">Selecione</option>');
+                                response.forEach(element => {
+                                    modal.find('#module_id').append('<option value="' +
+                                        element
+                                        .id + '">' + element
+                                        .name + '</option>');
+                                })
+                            } else {
+                                modal.find('#module_id').append(
+                                    '<option value="">Cadastre um módulo para este curso</option>'
+                                );
+                            }
+                        }
+                    });
+                });
             });
         </script>
     @endpush
