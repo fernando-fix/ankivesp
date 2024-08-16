@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LogAndFlash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class HomeController extends Controller
 {
@@ -13,11 +15,10 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        return view('statics.dashboard');
-    }
-
-    public function example()
-    {
-        return view('examples.index');
+        if (Gate::allows('visualizar_dashboard')) {
+            return view('statics.dashboard');
+        }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 }

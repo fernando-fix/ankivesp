@@ -60,6 +60,14 @@ class LessonController extends Controller
                 $errors[] = $e->getMessage();
             }
 
+            // Atualizar contagem de módulos do curso
+            try {
+                $lesson->module->lessons_count = $lesson->module->lessons()->count();
+                $lesson->module->save();
+            } catch (\Exception $e) {
+                $errors[] = $e->getMessage();
+            }
+
             if (count($errors) == 0) {
                 DB::commit();
                 LogAndFlash::success('Registro criado com sucesso!', $lesson);

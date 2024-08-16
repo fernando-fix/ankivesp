@@ -19,7 +19,7 @@ class ModuleController extends Controller
     {
         if (Gate::allows('visualizar_modulos')) {
             $courses = Course::get();
-            $modules = Module::with('course')->paginate($this->pagination)->withQueryString();
+            $modules = Module::with('course')->paginate($this->pagination);
             return view('modules.index', compact('modules', 'courses'));
         }
         LogAndFlash::warning('Sem permissão de acesso!');
@@ -53,6 +53,14 @@ class ModuleController extends Controller
                 $data['position'] = $lastPosition + 1;
 
                 $module = Module::create($data);
+            } catch (\Exception $e) {
+                $errors[] = $e->getMessage();
+            }
+
+            // Atualizar contagem de módulos do curso
+            try {
+                $module->course->modules_count = $module->course->modules()->count();
+                $module->course->save();
             } catch (\Exception $e) {
                 $errors[] = $e->getMessage();
             }

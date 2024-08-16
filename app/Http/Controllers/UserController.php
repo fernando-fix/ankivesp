@@ -19,13 +19,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        if (!Gate::allows('visualizar_usuarios')) {
-            LogAndFlash::warning('Sem permissão de acesso!');
-            return redirect()->back();
+        if (Gate::allows('visualizar_usuarios')) {
+            $users = User::paginate($this->pagination)->withQueryString();
+            return view('users.index', compact('users'));
         }
-
-        $users = User::paginate($this->pagination)->withQueryString();
-        return view('users.index', compact('users'));
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 
     /**
@@ -33,10 +32,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        if (!Gate::allows('cadastrar_usuarios')) {
-            LogAndFlash::warning('Sem permissão de acesso!');
+        if (Gate::allows('cadastrar_usuarios')) {
             return redirect()->back();
         }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 
     /**
@@ -44,30 +44,29 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        if (!Gate::allows('cadastrar_usuarios')) {
-            LogAndFlash::warning('Sem permissão de acesso!');
-            return redirect()->back();
-        }
+        if (Gate::allows('cadastrar_usuarios')) {
+            DB::beginTransaction();
+            $data = $request->except(['_token', 'modal_trigger']);
+            $errors = [];
 
-        DB::beginTransaction();
-        $data = $request->except(['_token', 'modal_trigger']);
-        $errors = [];
+            try {
+                $user = User::create($data);
+            } catch (\Exception $e) {
+                $errors[] = $e->getMessage();
+            }
 
-        try {
-            $user = User::create($data);
-        } catch (\Exception $e) {
-            $errors[] = $e->getMessage();
+            if (count($errors) == 0) {
+                DB::commit();
+                LogAndFlash::success('Registro criado com sucesso!', $user);
+                return redirect()->route('users.index');
+            } else {
+                DB::rollBack();
+                LogAndFlash::error('Erro ao tentar atualizar o registro!', $errors);
+                return redirect()->back();
+            }
         }
-
-        if (count($errors) == 0) {
-            DB::commit();
-            LogAndFlash::success('Registro criado com sucesso!', $user);
-            return redirect()->route('users.index');
-        } else {
-            DB::rollBack();
-            LogAndFlash::error('Erro ao tentar atualizar o registro!', $errors);
-            return redirect()->back();
-        }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 
     /**
@@ -75,10 +74,11 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if (!Gate::allows('visualizar_usuarios')) {
-            LogAndFlash::warning('Sem permissão de acesso!');
+        if (Gate::allows('visualizar_usuarios')) {
             return redirect()->back();
         }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 
     /**
@@ -86,10 +86,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if (!Gate::allows('editar_usuarios')) {
-            LogAndFlash::warning('Sem permissão de acesso!');
+        if (Gate::allows('editar_usuarios')) {
             return redirect()->back();
         }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 
     /**
@@ -97,30 +98,29 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        if (!Gate::allows('editar_usuarios')) {
-            LogAndFlash::warning('Sem permissão de acesso!');
-            return redirect()->back();
-        }
+        if (Gate::allows('editar_usuarios')) {
+            DB::beginTransaction();
+            $data = $request->except(['_token', 'modal_trigger']);
+            $errors = [];
 
-        DB::beginTransaction();
-        $data = $request->except(['_token', 'modal_trigger']);
-        $errors = [];
+            try {
+                $user->update($data);
+            } catch (\Exception $e) {
+                $errors[] = $e->getMessage();
+            }
 
-        try {
-            $user->update($data);
-        } catch (\Exception $e) {
-            $errors[] = $e->getMessage();
+            if (count($errors) == 0) {
+                DB::commit();
+                LogAndFlash::success('Registro atualizado com sucesso!', $user);
+                return redirect()->back();
+            } else {
+                DB::rollBack();
+                LogAndFlash::error('Erro ao tentar atualizar o registro!', $errors);
+                return redirect()->back();
+            }
         }
-
-        if (count($errors) == 0) {
-            DB::commit();
-            LogAndFlash::success('Registro atualizado com sucesso!', $user);
-            return redirect()->back();
-        } else {
-            DB::rollBack();
-            LogAndFlash::error('Erro ao tentar atualizar o registro!', $errors);
-            return redirect()->back();
-        }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 
     /**
@@ -128,67 +128,64 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if (!Gate::allows('excluir_usuarios')) {
-            LogAndFlash::warning('Sem permissão de acesso!');
-            return redirect()->back();
-        }
+        if (Gate::allows('excluir_usuarios')) {
+            DB::beginTransaction();
+            $errors = [];
 
-        DB::beginTransaction();
-        $errors = [];
+            try {
+                $user->delete();
+            } catch (\Exception $e) {
+                $errors[] = $e->getMessage();
+            }
 
-        try {
-            $user->delete();
-        } catch (\Exception $e) {
-            $errors[] = $e->getMessage();
+            if (count($errors) == 0) {
+                DB::commit();
+                LogAndFlash::success('Registro excluido com sucesso!', $user);
+                return redirect()->back();
+            } else {
+                DB::rollBack();
+                LogAndFlash::error('Erro ao tentar excluir o registro!', $errors);
+                return redirect()->back();
+            }
         }
-
-        if (count($errors) == 0) {
-            DB::commit();
-            LogAndFlash::success('Registro excluido com sucesso!', $user);
-            return redirect()->back();
-        } else {
-            DB::rollBack();
-            LogAndFlash::error('Erro ao tentar excluir o registro!', $errors);
-            return redirect()->back();
-        }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 
     public function editRoles(User $user)
     {
-        if (!Gate::allows('associar_papeis')) {
-            LogAndFlash::warning('Sem permissão de acesso!');
-            return redirect()->back();
+        if (Gate::allows('associar_papeis')) {
+            $roles = Role::orderBy('name', 'asc')->get();
+            return view('users.edit_roles', compact('user', 'roles'));
         }
-
-        $roles = Role::orderBy('name', 'asc')->get();
-        return view('users.edit_roles', compact('user', 'roles'));
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 
     public function updateRoles(Request $request, User $user)
     {
-        if (!Gate::allows('associar_papeis')) {
-            LogAndFlash::warning('Sem permissão de acesso!');
-            return redirect()->back();
-        }
+        if (Gate::allows('associar_papeis')) {
+            DB::beginTransaction();
+            $data = $request->except(['_token', 'modal_trigger']);
+            $errors = [];
 
-        DB::beginTransaction();
-        $data = $request->except(['_token', 'modal_trigger']);
-        $errors = [];
+            try {
+                $user->roles()->sync($request->roles);
+            } catch (\Exception $e) {
+                $errors[] = $e->getMessage();
+            }
 
-        try {
-            $user->roles()->sync($request->roles);
-        } catch (\Exception $e) {
-            $errors[] = $e->getMessage();
+            if (count($errors) == 0) {
+                DB::commit();
+                LogAndFlash::success('Registro atualizado com sucesso!', $user->roles);
+                return redirect()->back();
+            } else {
+                DB::rollBack();
+                LogAndFlash::error('Erro ao tentar atualizar o registro!', $errors);
+                return redirect()->back();
+            }
         }
-
-        if (count($errors) == 0) {
-            DB::commit();
-            LogAndFlash::success('Registro atualizado com sucesso!', $user->roles);
-            return redirect()->back();
-        } else {
-            DB::rollBack();
-            LogAndFlash::error('Erro ao tentar atualizar o registro!', $errors);
-            return redirect()->back();
-        }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 }

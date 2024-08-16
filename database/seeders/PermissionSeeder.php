@@ -10,28 +10,40 @@ use Illuminate\Support\Str;
 class PermissionSeeder extends Seeder
 {
     private $permissions = [
+        // HOME E DASHBOARD
+        ['Visualizar dashboard',    'Permite visualizar dashboard'],
         // USUARIOS
-        ['Visualizar Usuários',     'Permite visualizar Usuários'],
-        ['Cadastrar Usuários',      'Permite Cadastrar Usuários'],
-        ['Editar Usuários',         'Permite editar Usuários'],
-        ['Excluir Usuários',        'Permite excluir Usuários'],
+        ['Visualizar usuários',     'Permite visualizar usuários'],
+        ['Cadastrar usuários',      'Permite cadastrar usuários'],
+        ['Editar usuários',         'Permite editar usuários'],
+        ['Excluir usuários',        'Permite excluir usuários'],
         // ROLES
-        ['Visualizar Papéis',       'Permite visualizar Papéis'],
-        ['Cadastrar Papéis',        'Permite Cadastrar Papéis'],
-        ['Editar Papéis',           'Permite editar Papéis'],
-        ['Excluir Papéis',          'Permite excluir Papéis'],
+        ['Visualizar papéis',       'Permite visualizar papéis'],
+        ['Cadastrar papéis',        'Permite cadastrar papéis'],
+        ['Editar papéis',           'Permite editar papéis'],
+        ['Excluir papéis',          'Permite excluir papéis'],
         // PERMISSIONS
-        ['Visualizar Permissões',   'Permite visualizar Permissões'],
+        ['Visualizar permissões',   'Permite visualizar permissões'],
         // ASSOCIACOES
-        ['Associar papeis',         'Permite associar papeis'],
-        ['Associar permissoes',     'Permite associar permissoes'],
+        ['Associar papéis',         'Permite associar papéis'],
+        ['Associar permissões',     'Permite associar permissões'],
         // LOGS
-        ['Visualizar Logs',         'Permite visualizar Logs'],
+        ['Visualizar logs',         'Permite visualizar logs'],
         // CURSOS
-        ['Visualizar Cursos',       'Permite visualizar Cursos'],
-        ['Cadastrar Cursos',        'Permite Cadastrar Cursos'],
-        ['Editar Cursos',           'Permite editar Cursos'],
-        ['Excluir Cursos',          'Permite excluir Cursos'],
+        ['Visualizar cursos',       'Permite visualizar cursos'],
+        ['Cadastrar cursos',        'Permite cadastrar cursos'],
+        ['Editar cursos',           'Permite editar cursos'],
+        ['Excluir cursos',          'Permite excluir cursos'],
+        // MODULOS
+        ['Visualizar módulos',      'Permite visualizar módulos'],
+        ['Cadastrar módulos',       'Permite cadastrar módulos'],
+        ['Editar módulos',          'Permite editar módulos'],
+        ['Excluir módulos',         'Permite excluir módulos'],
+        // AULAS
+        ['Visualizar aulas',        'Permite visualizar aulas'],
+        ['Cadastrar aulas',         'Permite cadastrar aulas'],
+        ['Editar aulas',            'Permite editar aulas'],
+        ['Excluir aulas',           'Permite excluir aulas'],
 
     ];
 

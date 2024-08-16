@@ -380,6 +380,7 @@ return [
             'text' => 'Dashboard',
             'icon' => 'fas fa-tachometer-alt',
             'url' => '/dashboard',
+            'can' => 'visualizar_dashboard',
         ],
         // [
         //     'text' => 'Example',
