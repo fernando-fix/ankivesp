@@ -41,7 +41,7 @@ class CourseController extends Controller
      */
     public function store(CourseRequest $request)
     {
-        if (Gate::allows('cadastrar_usuarios')) {
+        if (Gate::allows('cadastrar_cursos')) {
             DB::beginTransaction();
             $data = $request->except(['_token', 'modal_trigger']);
             $errors = [];
@@ -95,7 +95,7 @@ class CourseController extends Controller
      */
     public function update(CourseRequest $request, Course $course)
     {
-        if (Gate::allows('editar_usuarios')) {
+        if (Gate::allows('editar_cursos')) {
             DB::beginTransaction();
             $data = $request->except(['_token', 'modal_trigger']);
             $errors = [];
@@ -125,7 +125,7 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        if (Gate::allows('excluir_usuarios')) {
+        if (Gate::allows('excluir_cursos')) {
             DB::beginTransaction();
             $errors = [];
 

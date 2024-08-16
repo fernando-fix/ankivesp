@@ -146,7 +146,7 @@ class ModuleController extends Controller
      */
     public function destroy(Module $module)
     {
-        if (Gate::allows('excluir_usuarios')) {
+        if (Gate::allows('excluir_modulos')) {
             DB::beginTransaction();
             $errors = [];
 
