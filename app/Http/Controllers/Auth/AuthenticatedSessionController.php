@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
 
         LogAndFlash::success('Login efetuado com sucesso!');
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('home', absolute: false));
     }
 
     /**
