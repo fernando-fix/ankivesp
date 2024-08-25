@@ -24,7 +24,7 @@ class ModuleRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->routeIs('modules.store')) {
+        if ($this->routeIs('admin.modules.store')) {
             return [
                 'name'      => [
                     'required',
@@ -37,7 +37,7 @@ class ModuleRequest extends FormRequest
             ];
         }
 
-        if ($this->routeIs('modules.update')) {
+        if ($this->routeIs('admin.modules.update')) {
             $module = $this->route('module');
             return [
                 'name'     => [

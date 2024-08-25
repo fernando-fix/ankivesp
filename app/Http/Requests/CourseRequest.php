@@ -22,7 +22,7 @@ class CourseRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->routeIs('courses.store')) {
+        if ($this->routeIs('admin.courses.store')) {
             return [
                 'name'      => ['required', 'string', 'min:3', 'max:255', 'unique:' . Course::class],
                 'year'      => ['required', 'numeric', 'min:2000', 'max:9999'],
@@ -30,7 +30,7 @@ class CourseRequest extends FormRequest
             ];
         }
 
-        if ($this->routeIs('courses.update')) {
+        if ($this->routeIs('admin.courses.update')) {
             $course = $this->route('course');
             return [
                 'name'     => ['required', 'string', 'min:3', 'max:255', 'unique:' . Course::class . ',name,' . $course->id],

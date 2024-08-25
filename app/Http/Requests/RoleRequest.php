@@ -22,13 +22,13 @@ class RoleRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->routeIs('roles.store')) {
+        if ($this->routeIs('admin.roles.store')) {
             return [
                 'name'      => ['required', 'string', 'min:3', 'max:255', 'unique:' . Role::class],
             ];
         }
 
-        if ($this->routeIs('roles.update')) {
+        if ($this->routeIs('admin.roles.update')) {
             $role = $this->route('role');
             return [
                 'name'      => ['required', 'string', 'min:3', 'max:255', 'unique:' . Role::class . ',name,' . $role->id],

@@ -21,13 +21,13 @@ class LessonRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->routeIs('lessons.store')) {
+        if ($this->routeIs('admin.lessons.store')) {
             return [
                 'name'      => [],
             ];
         }
 
-        if ($this->routeIs('lessons.update')) {
+        if ($this->routeIs('admin.lessons.update')) {
             $lesson = $this->route('lesson');
             return [
                 'name'     => [],

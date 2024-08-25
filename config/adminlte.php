@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => '/dashboard',
+    'dashboard_url' => '/home',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -294,173 +294,100 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
-        // [
-        //     'type' => 'navbar-search',
-        //     'text' => 'search',
-        //     'topnav_right' => false,
-        // ],
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => false,
         ],
-
-        // // Sidebar items:
-        // [
-        //     'type' => 'sidebar-menu-search',
-        //     'text' => 'search',
-        // ],
-        // [
-        //     'text' => 'blog',
-        //     'url' => 'admin/blog',
-        //     'can' => 'manage-blog',
-        // ],
-        // [
-        //     'text' => 'pages',
-        //     'url' => 'admin/pages',
-        //     'icon' => 'far fa-fw fa-file',
-        //     'label' => 4,
-        //     'label_color' => 'success',
-        // ],
-        // ['header' => 'account_settings'],
-        // [
-        //     'text' => 'profile',
-        //     'url' => 'admin/settings',
-        //     'icon' => 'fas fa-fw fa-user',
-        // ],
-        // [
-        //     'text' => 'change_password',
-        //     'url' => 'admin/settings',
-        //     'icon' => 'fas fa-fw fa-lock',
-        // ],
-        // [
-        //     'text' => 'multilevel',
-        //     'icon' => 'fas fa-fw fa-share',
-        //     'submenu' => [
-        //         [
-        //             'text' => 'level_one',
-        //             'url' => '#',
-        //         ],
-        //         [
-        //             'text' => 'level_one',
-        //             'url' => '#',
-        //             'submenu' => [
-        //                 [
-        //                     'text' => 'level_two',
-        //                     'url' => '#',
-        //                 ],
-        //                 [
-        //                     'text' => 'level_two',
-        //                     'url' => '#',
-        //                     'submenu' => [
-        //                         [
-        //                             'text' => 'level_three',
-        //                             'url' => '#',
-        //                         ],
-        //                         [
-        //                             'text' => 'level_three',
-        //                             'url' => '#',
-        //                         ],
-        //                     ],
-        //                 ],
-        //             ],
-        //         ],
-        //         [
-        //             'text' => 'level_one',
-        //             'url' => '#',
-        //         ],
-        //     ],
-        // ],
         [
             'text' => 'Home',
             'icon' => 'fas fa-fw fa-home',
             'url' => '/home',
-        ],
-        [
-            'text' => 'Dashboard',
-            'icon' => 'fas fa-tachometer-alt',
-            'url' => '/dashboard',
-            'can' => 'visualizar_dashboard',
+            'active' => ['home/*'],
         ],
         // [
-        //     'text' => 'Example',
-        //     'icon' => 'fas fa-info-circle',
-        //     'submenu' => [
-        //         [
-        //             'text' => 'Blade Example',
-        //             'url' => '/examples/blade',
-        //             'icon' => 'fab fa-laravel',
-        //         ],
-        //         [
-        //             'text' => 'Vue Example',
-        //             'url' => '/examples/vue',
-        //             'icon' => 'fab fa-vuejs',
-        //         ],
-        //     ]
+        //     'text' => 'Dashboard',
+        //     'icon' => 'fas fa-tachometer-alt',
+        //     'url' => '/dashboard',
+        //     'can' => 'visualizar_dashboard',
+        //     'active' => ['dashboard/*'],
+        // ],
+        // [
+        //     'text' => 'Meu perfil',
+        //     'icon' => 'fas fa-fw fa-user',
+        //     'url' => '/profiles',
+        //     'active' => ['profiles/*'],
         // ],
         [
-            'text' => 'Usuários',
-            'icon' => 'fas fa-users',
-            'can' => ['visualizar_usuarios', 'visualizar_papeis'],
+            'text' => 'Cursos',
+            'icon' => 'fas fa-fw fa-graduation-cap',
+            'url' => '/courses',
+            'active' => ['courses/*', 'lessons/*'],
+        ],
+        [
+            'text' => 'Admin',
+            'icon' => 'fas fa-fw fa-user',
+            'can' => ['visualizar_usuarios', 'visualizar_papeis', 'visualizar_cursos', 'visualizar_modulos', 'visualizar_aulas'],
             'submenu' => [
                 [
                     'text' => 'Usuários',
-                    'url' => '/users',
-                    'icon' => 'fas fa-user',
-                    'can' => 'visualizar_usuarios',
-                    'active' => ['users/*'],
+                    'icon' => 'fas fa-users',
+                    'can' => ['visualizar_usuarios', 'visualizar_papeis'],
+                    'submenu' => [
+                        [
+                            'text' => 'Usuários',
+                            'url' => '/admin/users',
+                            'icon' => 'fas fa-user',
+                            'can' => 'visualizar_usuarios',
+                            'active' => ['admin/users/*'],
+                        ],
+                        [
+                            'text' => 'Papéis',
+                            'url' => '/admin/roles',
+                            'icon' => 'fas fa-user-tag',
+                            'can' => 'visualizar_papeis',
+                            'active' => ['admin/roles/*'],
+                        ],
+                    ]
                 ],
-                [
-                    'text' => 'Papéis',
-                    'url' => '/roles',
-                    'icon' => 'fas fa-user-tag',
-                    'can' => 'visualizar_papeis',
-                    'active' => ['roles/*'],
-                ],
-            ]
-        ],
-        [
-            'text' => 'Cursos',
-            'icon' => 'fas fa-graduation-cap',
-            'can' => ['visualizar_cursos', 'visualizar_modulos', 'visualizar_aulas'],
-            'active' => ['courses/*'],
-            'submenu' => [
                 [
                     'text' => 'Cursos',
-                    'url' => '/courses',
                     'icon' => 'fas fa-graduation-cap',
-                    'can' => 'visualizar_cursos',
+                    'can' => ['visualizar_cursos', 'visualizar_modulos', 'visualizar_aulas'],
+                    'active' => ['admin/courses/*'],
+                    'submenu' => [
+                        [
+                            'text' => 'Cursos',
+                            'url' => '/admin/courses',
+                            'icon' => 'fas fa-graduation-cap',
+                            'can' => 'visualizar_cursos',
+                            'active' => ['admin/courses/*'],
+                        ],
+                        [
+                            'text' => 'Módulos',
+                            'url' => '/admin/modules',
+                            'icon' => 'fas fa-folder-open',
+                            'can' => 'visualizar_modulos',
+                            'active' => ['admin/modules/*'],
+                        ],
+                        [
+                            'text' => 'Aulas',
+                            'url' => '/admin/lessons',
+                            'icon' => 'fas fa-chalkboard-teacher',
+                            'can' => 'visualizar_aulas',
+                            'active' => ['admin/lessons/*'],
+                        ],
+                    ],
                 ],
                 [
-                    'text' => 'Módulos',
-                    'url' => '/modules',
-                    'icon' => 'fas fa-folder-open',
-                    'can' => 'visualizar_modulos',
-                ],
-                [
-                    'text' => 'Aulas',
-                    'url' => '/lessons',
-                    'icon' => 'fas fa-chalkboard-teacher',
-                    'can' => 'visualizar_aulas',
-                ],
-            ]
-        ]
-        // ['header' => 'labels'],
-        // [
-        //     'text' => 'important',
-        //     'icon_color' => 'red',
-        //     'url' => '#',
-        // ],
-        // [
-        //     'text' => 'warning',
-        //     'icon_color' => 'yellow',
-        //     'url' => '#',
-        // ],
-        // [
-        //     'text' => 'information',
-        //     'icon_color' => 'cyan',
-        //     'url' => '#',
-        // ],
+                    'text' => 'Logs',
+                    'icon' => 'fas fa-fw fa-file',
+                    'url' => '/admin/logs',
+                    'target' => '_blank',
+                    'can' => 'visualizar_logs',
+                    'active' => ['admin/logs/*'],
+                ]
+            ],
+        ],
     ],
 
     /*

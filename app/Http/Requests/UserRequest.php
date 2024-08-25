@@ -22,7 +22,7 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->routeIs('users.store')) {
+        if ($this->routeIs('admin.users.store')) {
             return [
                 'name'      => ['required', 'string', 'min:3', 'max:255'],
                 'email'     => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
@@ -30,7 +30,7 @@ class UserRequest extends FormRequest
             ];
         }
 
-        if ($this->routeIs('users.update')) {
+        if ($this->routeIs('admin.users.update')) {
             $user = $this->route('user');
             return [
                 'name'      => ['required', 'string', 'min:3', 'max:255'],

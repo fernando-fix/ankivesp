@@ -2,59 +2,76 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Helpers\LogAndFlash;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    private $loggedUser;
+
+    public function __construct()
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $this->loggedUser = User::find(auth()->user()->id);
     }
 
     /**
-     * Update the user's profile information.
+     * Display a listing of the resource.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function index()
     {
-        $request->user()->fill($request->validated());
+        return redirect()->route('profiles.show', $this->loggedUser->id);
+    }
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+    /**
+     * Display the specified resource.
+     */
+    public function show(User $user)
+    {
+        if ($user->id != $this->loggedUser->id) {
+            LogAndFlash::warning('Sem permissão de acesso!');
+            return redirect()->back();
         }
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return view('profiles.show', compact('user'));
     }
 
     /**
-     * Delete the user's account.
+     * Show the form for editing the specified resource.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function edit(User $user)
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
+        if ($user->id != $this->loggedUser->id) {
+            LogAndFlash::warning('Sem permissão de acesso!');
+            return redirect()->back();
+        }
 
-        $user = $request->user();
+        return view('profiles.edit', compact('user'));
+    }
 
-        Auth::logout();
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, User $user)
+    {
+        if ($user->id != $this->loggedUser->id) {
+            LogAndFlash::warning('Sem permissão de acesso!');
+            return redirect()->back();
+        }
 
-        $user->delete();
+        return redirect()->route('profiles.show', $user->id);
+    }
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(User $user)
+    {
+        if ($user->id != $this->loggedUser->id) {
+            LogAndFlash::warning('Sem permissão de acesso!');
+            return redirect()->back();
+        }
 
-        return Redirect::to('/');
+        return redirect()->route('profiles.show', $user->id);
     }
 }
