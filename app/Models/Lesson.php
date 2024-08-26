@@ -38,4 +38,28 @@ class Lesson extends Model
     {
         return $this->belongsToMany(User::class, 'watcheds');
     }
+
+    public function nextLesson()
+    {
+        $nextLesson = $this->module->lessons()->where('position', '>', $this->position)->orderBy('position')->first();
+        if (!$nextLesson) {
+            $nextModule = $this->module->nextModule();
+            if ($nextModule) {
+                return $nextModule->lessons()->orderBy('position')->first();
+            }
+        }
+        return $nextLesson;
+    }
+
+    public function previowsLesson()
+    {
+        $previowsLesson = $this->module->lessons()->where('position', '<', $this->position)->orderBy('position', 'desc')->first();
+        if (!$previowsLesson) {
+            $previowsModule = $this->module->previowsModule();
+            if ($previowsModule) {
+                return $previowsModule->lessons()->orderBy('position', 'desc')->first();
+            }
+        }
+        return $previowsLesson;
+    }
 }

@@ -18,11 +18,23 @@
                     @if ($module->lessons->count() > 0)
                         <h5 class="badge badge-primary">{{ $module->name }}</h5>
                         <ul class="list-group">
-                            @foreach ($module->lessons as $lesson)
-                                <a class="list-group-item" href="{{ route('lessons.show', $lesson) }}">
-                                    <i class="fas fa-eye text-primary"></i>
-                                    {{ $lesson->name }}
-                                </a>
+                            @foreach ($module->lessons->sortBy('position') as $lesson_item)
+                                @if ($lesson->id == $lesson_item->id)
+                                    <li class="list-group-item">
+                                        <i class="fas fa-eye text-secondary"></i>
+                                        <span class="text-primary">{{ $lesson_item->name }}</span>
+                                        <i class="fas fa-arrow-left text-success"></i>
+                                    </li>
+                                @else
+                                    <a class="list-group-item list-group-item-action"
+                                        href="{{ route('lessons.show', $lesson_item) }}">
+                                        <i class="fas fa-eye text-secondary"></i>
+                                        {{ $lesson_item->name }}
+                                        @if ($lesson->id == $lesson_item->id)
+                                            <i class="fas fa-arrow-left text-success"></i>
+                                        @endif
+                                    </a>
+                                @endif
                             @endforeach
                         </ul>
                     @endif

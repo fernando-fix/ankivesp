@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'home'])->name('home');
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::resource('courses', CourseController::class)->only(['index']);
-    Route::get('/lessons/last-watched', [LessonController::class, 'showLastWatched'])->name('lessons.last-watched');
+    Route::get('/lessons/last-watched/{course}', [LessonController::class, 'showLastWatched'])->name('lessons.last-watched');
     Route::resource('lessons', LessonController::class)->only(['show']);
     Route::resource('profiles', ProfileController::class);
 });

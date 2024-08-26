@@ -29,4 +29,14 @@ class Module extends Model
     {
         return $this->hasMany(Lesson::class);
     }
+
+    public function nextModule()
+    {
+        return $this->course->modules()->where('position', '>', $this->position)->orderBy('position')->first();
+    }
+
+    public function previowsModule()
+    {
+        return $this->course->modules()->where('position', '<', $this->position)->orderBy('position', 'desc')->first();
+    }
 }

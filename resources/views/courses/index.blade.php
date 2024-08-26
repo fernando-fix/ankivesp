@@ -20,8 +20,8 @@
                             {{-- add hover --}}
                             <div class="card mx-1 shadow" style="width: 350px;">
                                 <div class="p-2">
-                                    <a href="{{ route('lessons.last-watched') }}">
-                                        <img class="card-img-top rounded"
+                                    <a href="{{ route('lessons.last-watched', $course->id) }}">
+                                        <img class="card-img-top rounded" style="height: 222px; width: 334px"
                                             src="https://picsum.photos/id/{{ $course->id }}/300/200/"
                                             alt="Card image cap">
                                     </a>
@@ -37,7 +37,7 @@
                                         <br>
                                         Aulas: {{ $course->modules->sum('lessons_count') }}
                                     </p>
-                                    <a href="{{ route('lessons.last-watched') }}" class="btn btn-primary">
+                                    <a href="{{ route('lessons.last-watched', $course->id) }}" class="btn btn-primary">
                                         Acessar
                                     </a>
                                 </div>

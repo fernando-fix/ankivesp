@@ -5,16 +5,29 @@
     </iframe>
 </div>
 <div>
-    <a href="#" class="btn btn-sm btn-primary" style="width:35px" title="Anterior">
+    <!-- Botão Anterior -->
+    <a href="{{ isset($previousLesson) ? route('lessons.show', $previousLesson) : '#' }}"
+        class="btn btn-sm {{ isset($previousLesson) ? 'btn-primary' : 'btn-secondary' }}" style="width:35px"
+        title="Anterior">
         <i class="fas fa-backward"></i>
     </a>
-    <a href="#" class="btn btn-sm btn-primary" style="width:35px" title="Próximo">
+
+    <!-- Botão Próximo -->
+    <a href="{{ isset($nextLesson) ? route('lessons.show', $nextLesson) : '#' }}"
+        class="btn btn-sm {{ isset($nextLesson) ? 'btn-primary' : 'btn-secondary' }}" style="width:35px"
+        title="Próximo">
         <i class="fas fa-forward"></i>
     </a>
-    <a href="#" class="btn btn-sm btn-primary" style="width:35px" title="Marcar como visto">
+
+    <!-- Botão Marcar como Visto -->
+    <a href="#" class="btn btn-sm btn-secondary" style="width:35px" title="Marcar como visto">
         <i class="fas fa-eye"></i>
     </a>
+
+    <!-- Botão para mostrar as aulas -->
     @include('lessons.lessons_modal')
+
+    <!-- Botão para mostrar as perguntas -->
     <a href="#" class="btn btn-sm btn-primary" style="width:35px" title="Mostrar perguntas">
         <i class="fas fa-question"></i>
     </a>
