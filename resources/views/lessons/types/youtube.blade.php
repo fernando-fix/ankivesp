@@ -1,8 +1,10 @@
-<div id="video" class="">
-    <iframe src="{{ $lesson->url }}" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-    </iframe>
+<div id="video-container" class="mb-2">
+    <div id="video">
+        <iframe src="{{ $lesson->url }}" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+        </iframe>
+    </div>
 </div>
 <div>
     <!-- Botão Anterior -->
@@ -35,15 +37,33 @@
 
 @push('css')
     <style>
-        #video iframe {
+        #video-container {
             width: 900px;
-            height: 600px;
         }
 
-        @media screen and (max-width: 1200px) {
-            #video iframe {
+        #video {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+        }
+
+        #video iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        @media screen and (max-width: 1240px) {
+            #video-container {
                 width: 100%;
-                height: calc(100vw * 0.5625);
+            }
+        }
+
+        @media screen and (max-height: 700px) {
+            #video-container {
+                max-width: 750px;
             }
         }
     </style>
