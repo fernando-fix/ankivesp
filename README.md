@@ -13,8 +13,8 @@ PHP8.3, Laravel11, VUE3.
 ### Linux
 Abrir o terminal:
 ```bash
-git clone https://github.com/fernando-fix/projeto-modelo.git &&
-cd projeto-modelo &&
+git clone https://github.com/fernando-fix/ankivesp.git &&
+cd ankivesp &&
 cp .env.example .env &&
 composer install &&
 php artisan key:generate &&
@@ -31,6 +31,3 @@ Em outro terminal, se for alterar o projeto:
 npm install
 npm run dev
 ```
-
-### Windows
-Editar copiar manualmente o .env e editar no vscode
