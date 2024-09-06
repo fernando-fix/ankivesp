@@ -22,9 +22,17 @@
     </a>
 
     <!-- Botão Marcar como Visto -->
-    <a href="#" class="btn btn-sm btn-secondary" style="width:35px" title="Marcar como visto">
-        <i class="fas fa-eye"></i>
-    </a>
+    @if ($watchedLesson)
+        <a href="{{ route('markUnWatched', $lesson) }}" class="btn btn-sm btn-primary" style="width:35px"
+            title="Marcar como não visto">
+            <i class="fas fa-eye"></i>
+        </a>
+    @else
+        <a href="{{ route('markWatched', $lesson) }}" class="btn btn-sm btn-secondary" style="width:35px"
+            title="Marcar como visto">
+            <i class="fas fa-eye"></i>
+        </a>
+    @endif
 
     <!-- Botão para mostrar as aulas -->
     @include('lessons.lessons_modal')

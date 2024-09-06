@@ -21,14 +21,14 @@
                             @foreach ($module->lessons->sortBy('position') as $lesson_item)
                                 @if ($lesson->id == $lesson_item->id)
                                     <li class="list-group-item">
-                                        <i class="fas fa-eye text-secondary"></i>
+                                        <i class="fas fa-eye text-{{ $lesson_item->isWatched() ? 'primary' : 'secondary' }}"></i>
                                         <span class="text-primary">{{ $lesson_item->name }}</span>
                                         <i class="fas fa-arrow-left text-success"></i>
                                     </li>
                                 @else
                                     <a class="list-group-item list-group-item-action"
                                         href="{{ route('lessons.show', $lesson_item) }}">
-                                        <i class="fas fa-eye text-secondary"></i>
+                                        <i class="fas fa-eye text-{{ $lesson_item->isWatched() ? 'primary' : 'secondary' }}"></i>
                                         {{ $lesson_item->name }}
                                         @if ($lesson->id == $lesson_item->id)
                                             <i class="fas fa-arrow-left text-success"></i>

@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('lesson_id');
-            $table->date('date');
             $table->timestamps();
+
+            // Unique
+            $table->unique(['user_id', 'lesson_id']);
 
             // Foreign keys
             $table->foreign('user_id')->references('id')->on('users');

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Lesson extends Model
 {
@@ -61,5 +62,10 @@ class Lesson extends Model
             }
         }
         return $previowsLesson;
+    }
+
+    public function isWatched()
+    {
+        return $this->watcheds()->where('user_id', Auth::user()->id)->exists();
     }
 }

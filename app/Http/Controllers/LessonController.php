@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Module;
-use Illuminate\Http\Request;
+use App\Models\Watched;
+use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
 {
@@ -18,7 +19,8 @@ class LessonController extends Controller
         $modules = Module::with('lessons')->where('course_id', $course_id)->orderBy('position')->get();
         $previousLesson = $lesson->previowsLesson();
         $nextLesson = $lesson->nextLesson();
-        return view('lessons.show', compact('modules', 'lesson', 'previousLesson', 'nextLesson'));
+        $watchedLesson = Watched::where('user_id', Auth::user()->id)->where('lesson_id', $lesson->id)->first() ?? null;
+        return view('lessons.show', compact('modules', 'lesson', 'previousLesson', 'nextLesson', 'watchedLesson'));
     }
 
     public function showLastWatched(Course $course)
