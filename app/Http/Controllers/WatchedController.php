@@ -28,7 +28,7 @@ class WatchedController extends Controller
             $watched = Watched::firstOrCreate([
                 'user_id' => $this->loggedUser->id,
                 'lesson_id' => $lesson->id,
-                'date' => date('Y-m-d H:i:s'),
+                'created_at' => date('Y-m-d H:i:s'),
             ]);
         } catch (\Exception $e) {
             $errors[] = $e->getMessage();

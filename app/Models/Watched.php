@@ -13,7 +13,6 @@ class Watched extends Model
     protected $fillable = [
         'user_id',
         'lesson_id',
-        'date',
     ];
 
     // Relationships

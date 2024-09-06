@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->enum('type', ['youtube', 'pdf', 'link']);
             $table->string('url'); // link ou url
+            $table->string('video_id')->nullable();
             $table->integer('position')->default(0); //ordem de exibição
             $table->timestamps();
 

@@ -1,5 +1,5 @@
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#lessonsModal">
+<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#lessonsModal" title="Lista">
     <i class="fas fa-list"></i>
 </button>
 

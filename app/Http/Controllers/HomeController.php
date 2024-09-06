@@ -20,6 +20,7 @@ class HomeController extends Controller
 
     public function dashboard()
     {
+        return redirect()->route('home');
         if (Gate::allows('visualizar_dashboard')) {
             return view('statics.dashboard');
         }

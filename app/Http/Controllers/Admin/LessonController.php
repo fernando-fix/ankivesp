@@ -52,6 +52,16 @@ class LessonController extends Controller
             $data = $request->except(['_token', 'modal_trigger']);
             $errors = [];
 
+            if ($data['type'] == 'youtube') {
+                function getYouTubeVideoId($url)
+                {
+                    $pattern = '/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+                    preg_match($pattern, $url, $matches);
+                    return $matches[1] ?? null;
+                }
+                $data['video_id'] = getYouTubeVideoId($data['url']);
+            }
+
             try {
                 $lastPosition = Lesson::where('module_id', $data['module_id'])->max('position');
                 $data['position'] = $lastPosition + 1;
@@ -116,6 +126,16 @@ class LessonController extends Controller
             DB::beginTransaction();
             $data = $request->except(['_token', 'modal_trigger']);
             $errors = [];
+
+            if ($data['type'] == 'youtube') {
+                function getYouTubeVideoId($url)
+                {
+                    $pattern = '/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+                    preg_match($pattern, $url, $matches);
+                    return $matches[1] ?? null;
+                }
+                $data['video_id'] = getYouTubeVideoId($data['url']);
+            }
 
             try {
                 $lesson->update($data);
