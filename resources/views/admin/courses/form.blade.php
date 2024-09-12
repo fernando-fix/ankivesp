@@ -30,10 +30,21 @@
         <label for="semester">Semestre</label>
         <select class="form-control @error('semester') is-invalid @enderror" id="semester" name="semester"
             value="{{ old('semester', $course->semester ?? '') }}" required autocomplete="off">
-            <option value="1" {{ old('semester', $course->semester ?? '') == 1 ? 'selected' : ''}}>1</option>
-            <option value="2" {{ old('semester', $course->semester ?? '') == 2 ? 'selected' : ''}}>2</option>
+            <option value="1" {{ old('semester', $course->semester ?? '') == 1 ? 'selected' : '' }}>1</option>
+            <option value="2" {{ old('semester', $course->semester ?? '') == 2 ? 'selected' : '' }}>2</option>
         </select>
         @error('semester')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
+
+    {{-- Image --}}
+    <div class="form-group col-12">
+        <label for="image">Imagem</label>
+        <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image">
+        @error('image')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>

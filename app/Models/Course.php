@@ -37,4 +37,9 @@ class Course extends Model
     {
         return $this->hasManyThrough(Lesson::class, Module::class);
     }
+
+    public function image()
+    {
+        return $this->hasOne(Att::class, 'table_id')->where('table_name', 'courses')->where('field_name', 'image');
+    }
 }

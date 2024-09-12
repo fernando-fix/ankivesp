@@ -8,6 +8,7 @@ use App\Models\Course;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
+use App\Models\Att;
 
 class CourseController extends Controller
 {
@@ -18,7 +19,7 @@ class CourseController extends Controller
     public function index()
     {
         if (Gate::allows('visualizar_cursos')) {
-            $courses = Course::paginate($this->pagination)->withQueryString();
+            $courses = Course::with('image')->paginate($this->pagination);
             return view('admin/courses.index', compact('courses'));
         }
         LogAndFlash::warning('Sem permissão de acesso!');
@@ -51,6 +52,13 @@ class CourseController extends Controller
                 $course = Course::create($data);
             } catch (\Exception $e) {
                 $errors[] = $e->getMessage();
+            }
+
+            if (isset($data['image']) && count($errors) == 0) {
+                $att = Att::attachFile($request->file('image'), 'courses', 'courses', $course->id, 'image');
+                if (!$att) {
+                    $errors[] = 'Erro ao salvar imagem!';
+                }
             }
 
             if (count($errors) == 0) {
@@ -107,6 +115,13 @@ class CourseController extends Controller
                 $errors[] = $e->getMessage();
             }
 
+            if (isset($data['image']) && count($errors) == 0) {
+                $att = Att::attachFile($request->file('image'), 'courses', 'courses', $course->id, 'image');
+                if (!$att) {
+                    $errors[] = 'Erro ao salvar imagem!';
+                }
+            }
+
             if (count($errors) == 0) {
                 DB::commit();
                 LogAndFlash::success('Registro atualizado com sucesso!', $course);
@@ -134,6 +149,14 @@ class CourseController extends Controller
                 $course->delete();
             } catch (\Exception $e) {
                 $errors[] = $e->getMessage();
+            }
+
+            // Deletar Imagem
+            if (count($errors) == 0) {
+                $deleteImage = Att::deleteFile('courses', $course->id, 'image');
+                if (!$deleteImage) {
+                    $errors[] = 'Erro ao remover imagem!';
+                }
             }
 
             if (count($errors) == 0) {

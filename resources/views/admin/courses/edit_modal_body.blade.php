@@ -10,7 +10,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('admin.courses.update', $course) }}" id="editCourseForm-{{ $course->id }}" method="post">
+                <form action="{{ route('admin.courses.update', $course) }}" id="editCourseForm-{{ $course->id }}"
+                    method="post" enctype="multipart/form-data">
                     @csrf
                     @method('put')
                     <input type="hidden" name="modal_trigger" value="#editCourseModal-{{ $course->id }}">
@@ -19,8 +20,10 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload()">Fechar</button>
-                <button type="submit" class="btn btn-primary" form="editCourseForm-{{ $course->id }}">Alterar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    onclick="location.reload()">Fechar</button>
+                <button type="submit" class="btn btn-primary"
+                    form="editCourseForm-{{ $course->id }}">Alterar</button>
             </div>
         </div>
     </div>

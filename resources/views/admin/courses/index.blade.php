@@ -21,6 +21,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Id</th>
+                            <th scope="col">Imagem</th>
                             <th scope="col">Nome</th>
                             <th scope="col">Ano</th>
                             <th scope="col">Semestre</th>
@@ -33,6 +34,15 @@
                         @forelse ($courses as $course)
                             <tr>
                                 <td class="align-middle">{{ $course->id }}</td>
+                                <td class="align-middle">
+                                    @if ($course->image)
+                                        <img src="{{ asset('storage/' . $course->image->file_path) }}" alt=""
+                                            style="height: 30px">
+                                    @else
+                                        <img src="https://picsum.photos/id/{{ $course->id }}/40" alt=""
+                                            style="height: 30px">
+                                    @endif
+                                </td>
                                 <td class="align-middle">{{ $course->name }}</td>
                                 <td class="align-middle">{{ $course->year }}</td>
                                 <td class="align-middle">{{ $course->semester }}</td>
@@ -48,7 +58,9 @@
                                             <ul class="dropdown-menu dropdown-menu-right">
                                                 @can('editar_cursos')
                                                     <li>
-                                                        @include('admin.courses.edit_modal_trigger', $course)
+                                                        @include(
+                                                            'admin.courses.edit_modal_trigger',
+                                                            $course)
                                                     </li>
                                                 @endcan
                                                 @can('reorganizar_modulos')
