@@ -23,7 +23,8 @@
                                     <a href="{{ route('lessons.last-watched', $course->id) }}">
                                         @if ($course->image)
                                             <img class="card-img-top rounded" style="height: 222px; width: 334px"
-                                                src="{{ asset('storage/' . $course->image) }}" alt="Card image cap">
+                                                src="{{ asset('storage/' . $course->image->file_path) }}"
+                                                alt="Card image cap">
                                         @else
                                             <img class="card-img-top rounded" style="height: 222px; width: 334px"
                                                 src="https://picsum.photos/id/{{ $course->id }}/334/222"

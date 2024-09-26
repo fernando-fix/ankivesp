@@ -201,4 +201,14 @@ class LessonController extends Controller
         LogAndFlash::warning('Sem permissão de acesso!');
         return redirect()->back();
     }
+
+    public function indexJson(Module $module)
+    {
+        if (Gate::allows('visualizar_modulos')) {
+            $lessons = Lesson::where('module_id', $module->id)->get(['id', 'name', 'position']);
+            return response()->json($lessons);
+        }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return response()->json(null, 403);
+    }
 }

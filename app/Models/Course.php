@@ -42,4 +42,10 @@ class Course extends Model
     {
         return $this->hasOne(Att::class, 'table_id')->where('table_name', 'courses')->where('field_name', 'image');
     }
+
+    // No modelo Course
+    public function getQuestionsAttribute()
+    {
+        return $this->lessons->flatMap->questions;
+    }
 }

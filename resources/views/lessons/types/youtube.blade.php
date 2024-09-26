@@ -38,9 +38,39 @@
     @include('lessons.lessons_modal')
 
     <!-- Botão para mostrar as perguntas -->
-    <a href="#" class="btn btn-sm btn-primary" style="width:35px" title="Mostrar perguntas">
-        <i class="fas fa-question"></i>
-    </a>
+    <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"
+            title="Mais Opções">
+            <i class="fas fa-question"></i>
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item" target="_blank"
+                    href="{{ route('questions.index', ['course_id' => $lesson->course->id]) }}" role="button">
+                    <i class="fas fa-question-circle text-primary"></i>
+                    Ver questões deste curso
+                    <span class="badge badge-primary ml-1">
+                        {{ count($lesson->course->questions) }}
+                    </span>
+                </a>
+                <a class="dropdown-item" target="_blank"
+                    href="{{ route('questions.index', ['lesson_id' => $lesson->id]) }}" role="button">
+                    <i class="fas fa-question-circle text-primary"></i>
+                    Ver questões desta aula
+                    <span class="badge badge-primary ml-1">
+                        {{ count($lesson->questions) }}
+                    </span>
+                </a>
+                <a class="dropdown-item" href="#" role="button">
+                    <i class="fas fa-play-circle text-primary"></i>
+                    Praticar questões desta aula
+                    <span class="badge badge-primary ml-1">
+                        {{ count($lesson->questions) }}
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>
 
 @push('css')

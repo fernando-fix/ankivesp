@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\ModuleController as AdminModuleController;
 use App\Http\Controllers\Admin\RoleController as AdminRoleController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WatchedController;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 
@@ -21,6 +23,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'home'])->name('home');
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::resource('courses', CourseController::class)->only(['index']);
+    Route::resource('questions', QuestionController::class);
+
+    Route::get('/review/{lesson}', [ReviewController::class, 'review'])->name('review');
+    Route::get('/json/review/{lesson}', [ReviewController::class, 'reviewJson'])->name('review.json');
     Route::get('/lessons/last-watched/{course}', [LessonController::class, 'showLastWatched'])->name('lessons.last-watched');
     Route::resource('lessons', LessonController::class)->only(['show']);
     Route::get('/markWatched/{lesson}', [WatchedController::class, 'markWatched'])->name('markWatched');
@@ -45,7 +51,8 @@ Route::prefix('admin')
         Route::resource('roles', AdminRoleController::class);
         // Courses, Modules and Lessons
         Route::resource('courses', AdminCourseController::class);
-        Route::get('api/modules/{course}', [AdminModuleController::class, 'indexJson'])->name('api.modules.index_json');
+        Route::get('json/modules/{course}', [AdminModuleController::class, 'indexJson'])->name('json.modules.index_json');
+        Route::get('json/lessons/{module}', [AdminLessonController::class, 'indexJson'])->name('json.lessons.index_json');
         Route::resource('modules', AdminModuleController::class);
         Route::resource('lessons', AdminLessonController::class);
     });

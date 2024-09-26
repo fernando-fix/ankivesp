@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('answers', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->integer('year');
-            $table->enum('semester', ['1', '2']);
-            $table->integer('modules_count')->default(0);
-            $table->integer('lessons_count')->default(0);
-            $table->integer('students_count')->default(0);
+            $table->unsignedBigInteger('question_id');
+            $table->text('answer');
+            $table->boolean('correct')->default(false);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
 
             // Foreign keys
+            $table->foreign('question_id')->references('id')->on('questions');
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
         });
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists('answers');
     }
 };

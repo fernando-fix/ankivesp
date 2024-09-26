@@ -128,7 +128,7 @@
                 var modal = $(this);
                 modal.find('#course_id').on('change', function() {
                     let course_id = $(this).val();
-                    let url = "/admin/api/modules/:course_id";
+                    let url = "/admin/json/modules/:course_id";
                     url = url.replace(':course_id', course_id);
 
                     $.ajax({

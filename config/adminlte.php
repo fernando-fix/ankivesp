@@ -324,6 +324,24 @@ return [
             'active' => ['courses/*', 'lessons/*'],
         ],
         [
+            'text' => 'Perguntas',
+            'icon' => 'fas fa-fw fa-question',
+            'url' => '/questions',
+            'active' => ['questions/*'],
+        ],
+        [
+            'text' => 'Revisar',
+            'icon' => 'fas fa-fw fa-book',
+            'url' => '/reviews',
+            'active' => ['reviews/*'],
+        ],
+        [
+            'text' => 'Feedback',
+            'icon' => 'fas fa-fw fa-comments',
+            'url' => '/feedbacks',
+            'active' => ['feedbacks/*'],
+        ],
+        [
             'text' => 'Admin',
             'icon' => 'fas fa-fw fa-user',
             'can' => ['visualizar_usuarios', 'visualizar_papeis', 'visualizar_cursos', 'visualizar_modulos', 'visualizar_aulas'],

@@ -41,6 +41,11 @@ class Lesson extends Model
         return $this->belongsToMany(User::class, 'watcheds');
     }
 
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+
     public function nextLesson()
     {
         $nextLesson = $this->module->lessons()->where('position', '>', $this->position)->orderBy('position')->first();
