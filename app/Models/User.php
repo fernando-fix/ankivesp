@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Course::class, 'subscriptions');
     }
+
+    public function questions()
+    {
+        return $this->belongsToMany(Question::class, 'question_user');
+    }
 }

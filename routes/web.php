@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\RoleController as AdminRoleController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\QuestionController;
-use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\QuestionListController;
 use App\Http\Controllers\WatchedController;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 
@@ -24,9 +24,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::resource('courses', CourseController::class)->only(['index']);
     Route::resource('questions', QuestionController::class);
-
-    Route::get('/review/{lesson}', [ReviewController::class, 'review'])->name('review');
-    Route::get('/json/review/{lesson}', [ReviewController::class, 'reviewJson'])->name('review.json');
+    Route::resource('reviews', QuestionListController::class)->parameter('reviews', 'questionList');
+    Route::post('reviews/by-lesson/{lesson}', [QuestionListController::class, 'reviewByLesson'])->name('reviews.by-lesson');
+    Route::get('/reviews/{questionList}/first-question', [QuestionListController::class, 'showFirstQuestion'])->name('reviews.first-question');
+    Route::get('/reviews/{questionList}/question/{question}', [QuestionListController::class, 'answerQuestions'])->name('reviews.answer-questions');
+    Route::post('/reviews/check-answer/{questionListItem}', [QuestionListController::class, 'checkAnswer'])->name('reviews.check-answer');
+    Route::post('/reviews/check-all-answers/{questionList}', [QuestionListController::class, 'checkAllAnswers'])->name('reviews.check-all-answers');
     Route::get('/lessons/last-watched/{course}', [LessonController::class, 'showLastWatched'])->name('lessons.last-watched');
     Route::resource('lessons', LessonController::class)->only(['show']);
     Route::get('/markWatched/{lesson}', [WatchedController::class, 'markWatched'])->name('markWatched');

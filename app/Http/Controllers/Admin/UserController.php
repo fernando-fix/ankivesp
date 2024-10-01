@@ -133,6 +133,10 @@ class UserController extends Controller
             DB::beginTransaction();
             $errors = [];
 
+            if ($user->is_admin == 1) {
+                $errors[] = 'O administrador não pode ser excluido!';
+            }
+
             try {
                 $user->delete();
             } catch (\Exception $e) {

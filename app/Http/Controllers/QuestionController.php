@@ -47,7 +47,6 @@ class QuestionController extends Controller
         DB::beginTransaction();
         $data = $request->except(['_token', 'modal_trigger']);
         $errors = [];
-        dd($data);
 
         try {
             $question = Question::create([

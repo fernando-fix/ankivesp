@@ -11,23 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('question_user', function (Blueprint $table) {
+        Schema::create('question_list_items', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('question_list_id');
+            $table->unsignedBigInteger('answer_id')->nullable();
             $table->unsignedBigInteger('question_id');
-            $table->unsignedBigInteger('user_id');
-            $table->datetime('last_view');
-            $table->datetime('next_view')->nullable();
-            $table->integer('score');
-            $table->float('factor');
-            $table->integer('interval');
+            $table->boolean('correct')->default(false);
             $table->timestamps();
 
-            // Index
-            $table->index(['question_id', 'user_id']);
-
             // Foreign keys
+            $table->foreign('question_list_id')->references('id')->on('question_lists')->onDelete('cascade');
+            $table->foreign('answer_id')->references('id')->on('answers');
             $table->foreign('question_id')->references('id')->on('questions');
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -36,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('question_user');
+        Schema::dropIfExists('question_list_items');
     }
 };

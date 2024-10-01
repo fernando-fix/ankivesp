@@ -330,17 +330,17 @@ return [
             'active' => ['questions/*'],
         ],
         [
-            'text' => 'Revisar',
+            'text' => 'Minhas revisões',
             'icon' => 'fas fa-fw fa-book',
             'url' => '/reviews',
             'active' => ['reviews/*'],
         ],
-        [
-            'text' => 'Feedback',
-            'icon' => 'fas fa-fw fa-comments',
-            'url' => '/feedbacks',
-            'active' => ['feedbacks/*'],
-        ],
+        // [
+        //     'text' => 'Feedback',
+        //     'icon' => 'fas fa-fw fa-comments',
+        //     'url' => '/feedbacks',
+        //     'active' => ['feedbacks/*'],
+        // ],
         [
             'text' => 'Admin',
             'icon' => 'fas fa-fw fa-user',

@@ -11,22 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('question_user', function (Blueprint $table) {
+        Schema::create('question_lists', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('question_id');
             $table->unsignedBigInteger('user_id');
-            $table->datetime('last_view');
-            $table->datetime('next_view')->nullable();
-            $table->integer('score');
-            $table->float('factor');
-            $table->integer('interval');
+            $table->enum('type', ['review', 'simulation']);
+            $table->integer('count_correct')->default(0);
+            $table->integer('count_total');
+            $table->datetime('datetime_limit');
+            $table->boolean('finished')->default(false);
             $table->timestamps();
 
-            // Index
-            $table->index(['question_id', 'user_id']);
-
             // Foreign keys
-            $table->foreign('question_id')->references('id')->on('questions');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
@@ -36,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('question_user');
+        Schema::dropIfExists('question_lists');
     }
 };

@@ -61,13 +61,16 @@
                         {{ count($lesson->questions) }}
                     </span>
                 </a>
-                <a class="dropdown-item" href="#" role="button">
-                    <i class="fas fa-play-circle text-primary"></i>
-                    Praticar questões desta aula
-                    <span class="badge badge-primary ml-1">
-                        {{ count($lesson->questions) }}
-                    </span>
-                </a>
+                <form action="{{ route('reviews.by-lesson', $lesson->id) }}" method="post">
+                    @csrf
+                    <button type="submit" class="dropdown-item">
+                        <i class="fas fa-play-circle text-primary"></i>
+                        Praticar questões desta aula
+                        <span class="badge badge-primary ml-1">
+                            {{ count($lesson->questions) }}
+                        </span>
+                    </button>
+                </form>
             </li>
         </ul>
     </div>
