@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigIngeter('course_id')->nullable();
+            $table->unsignedBigInteger('course_id')->nullable();
             $table->timestamps();
 
             // foreign keys
