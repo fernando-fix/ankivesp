@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->datetime('last_view');
             $table->datetime('next_view')->nullable();
-            $table->integer('score');
+            $table->float('score');
             $table->float('factor');
             $table->integer('interval');
             $table->timestamps();

@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('reviews', QuestionListController::class)->parameter('reviews', 'questionList');
     Route::post('reviews/by-lesson/{lesson}', [QuestionListController::class, 'reviewByLesson'])->name('reviews.by-lesson');
     Route::get('/reviews/{questionList}/first-question', [QuestionListController::class, 'showFirstQuestion'])->name('reviews.first-question');
+    // lista de questões
     Route::get('/reviews/{questionList}/question/{question}', [QuestionListController::class, 'answerQuestions'])->name('reviews.answer-questions');
     Route::post('/reviews/check-answer/{questionListItem}', [QuestionListController::class, 'checkAnswer'])->name('reviews.check-answer');
     Route::post('/reviews/check-all-answers/{questionList}', [QuestionListController::class, 'checkAllAnswers'])->name('reviews.check-all-answers');
@@ -58,4 +59,10 @@ Route::prefix('admin')
         Route::get('json/lessons/{module}', [AdminLessonController::class, 'indexJson'])->name('json.lessons.index_json');
         Route::resource('modules', AdminModuleController::class);
         Route::resource('lessons', AdminLessonController::class);
+
+        Route::get('/rota-de-fuga', function () {
+            Illuminate\Support\Facades\Schema::table('question_user', function ($table) {
+                $table->float('score');
+            });
+        });
     });

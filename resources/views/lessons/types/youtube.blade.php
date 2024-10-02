@@ -37,43 +37,53 @@
     <!-- Botão para mostrar as aulas -->
     @include('lessons.lessons_modal')
 
-    <!-- Botão para mostrar as perguntas -->
-    <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"
-            title="Mais Opções">
-            <i class="fas fa-question"></i>
-        </button>
-        <ul class="dropdown-menu">
-            <li>
-                <a class="dropdown-item" target="_blank"
-                    href="{{ route('questions.index', ['course_id' => $lesson->course->id]) }}" role="button">
-                    <i class="fas fa-question-circle text-primary"></i>
-                    Ver questões deste curso
-                    <span class="badge badge-primary ml-1">
-                        {{ count($lesson->course->questions) }}
-                    </span>
-                </a>
-                <a class="dropdown-item" target="_blank"
-                    href="{{ route('questions.index', ['lesson_id' => $lesson->id]) }}" role="button">
-                    <i class="fas fa-question-circle text-primary"></i>
-                    Ver questões desta aula
-                    <span class="badge badge-primary ml-1">
-                        {{ count($lesson->questions) }}
-                    </span>
-                </a>
-                <form action="{{ route('reviews.by-lesson', $lesson->id) }}" method="post">
-                    @csrf
-                    <button type="submit" class="dropdown-item">
-                        <i class="fas fa-play-circle text-primary"></i>
-                        Praticar questões desta aula
-                        <span class="badge badge-primary ml-1">
-                            {{ count($lesson->questions) }}
-                        </span>
-                    </button>
-                </form>
-            </li>
-        </ul>
-    </div>
+    @if ($lesson->course->questions->count() > 0 || count($lesson->questions) > 0)
+
+        <!-- Botão para mostrar as perguntas -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"
+                title="Mais Opções">
+                <i class="fas fa-question"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if ($lesson->course->questions->count() > 0)
+                        <a class="dropdown-item" target="_blank"
+                            href="{{ route('questions.index', ['course_id' => $lesson->course->id]) }}" role="button">
+                            <i class="fas fa-question-circle text-primary"></i>
+                            Ver questões deste curso
+                            <span class="badge badge-primary ml-1">
+                                {{ count($lesson->course->questions) }}
+                            </span>
+                        </a>
+                    @endif
+                    @if (count($lesson->questions) > 0)
+                        <a class="dropdown-item" target="_blank"
+                            href="{{ route('questions.index', ['lesson_id' => $lesson->id]) }}" role="button">
+                            <i class="fas fa-question-circle text-primary"></i>
+                            Ver questões desta aula
+                            <span class="badge badge-primary ml-1">
+                                {{ count($lesson->questions) }}
+                            </span>
+                        </a>
+                    @endif
+                    @if (count($lesson->questions) > 0)
+                        <form action="{{ route('reviews.by-lesson', $lesson->id) }}" method="post">
+                            @csrf
+                            <button type="submit" class="dropdown-item">
+                                <i class="fas fa-play-circle text-primary"></i>
+                                Praticar questões desta aula
+                                <span class="badge badge-primary ml-1">
+                                    {{ count($lesson->questions) }}
+                                </span>
+                            </button>
+                        </form>
+                    @endif
+                </li>
+            </ul>
+        </div>
+
+    @endif
 </div>
 
 @push('css')

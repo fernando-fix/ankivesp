@@ -19,7 +19,7 @@ class QuestionListController extends Controller
     public function index()
     {
         $this->_deleteNotFinishedQuestionLists();
-        $questionLists = QuestionList::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
+        $questionLists = QuestionList::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(15);
 
         return view('question_lists.index', compact('questionLists'));
     }
@@ -29,7 +29,7 @@ class QuestionListController extends Controller
      */
     public function create()
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -37,7 +37,53 @@ class QuestionListController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->except('_token', 'modal_trigger');
+
+        if (!$data['type'] == 'review') {
+            toastr()->error('Tipo de lista inválido');
+            return redirect()->back();
+        }
+
+        $questionListExistsInProgress = QuestionList::where('user_id', Auth::user()->id)
+            ->where('finished', false)
+            ->where('datetime_limit', '>', now())
+            ->first();
+
+        if ($questionListExistsInProgress) {
+            LogAndFlash::warning('Voce ja possui uma lista de revisão pendente');
+            return redirect()->route('reviews.first-question', $questionListExistsInProgress);
+        }
+
+        $this->_deleteNotFinishedQuestionLists();
+
+        $questionUsers = QuestionUser::where('user_id', Auth::user()->id)->where('next_view', '<', now())->get();
+        if ($questionUsers->count() == 0) {
+            LogAndFlash::success('Nenhuma questão para revisão');
+            return redirect()->back();
+        }
+
+        $newQuestionList = QuestionList::create([
+            'user_id' => Auth::user()->id,
+            'type' => $data['type'],
+            'count_correct' => 0,
+            'count_total' => $questionUsers->count(),
+            'datetime_limit' => now()->addMinutes(30),
+            'finished' => false,
+        ]);
+
+        foreach ($questionUsers as $question) {
+            $newQuestionListItem = QuestionListItem::create([
+                'question_list_id' => $newQuestionList->id,
+                'question_id' => $question->id,
+                'answer_id' => null,
+            ]);
+        }
+
+        $newQuestionList->count_total = $questionUsers->count();
+        $newQuestionList->save();
+
+        LogAndFlash::success('Lista de revisão criada com sucesso', $newQuestionList);
+        return redirect()->route('reviews.first-question', $newQuestionList);
     }
 
     /**
@@ -59,7 +105,7 @@ class QuestionListController extends Controller
      */
     public function edit(QuestionList $questionList)
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -67,7 +113,7 @@ class QuestionListController extends Controller
      */
     public function update(Request $request, QuestionList $questionList)
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -75,7 +121,7 @@ class QuestionListController extends Controller
      */
     public function destroy(QuestionList $questionList)
     {
-        //
+        return redirect()->back();
     }
 
     public function reviewByLesson(Lesson $lesson)
@@ -122,7 +168,7 @@ class QuestionListController extends Controller
 
     public function reviewQuestions(QuestionList $questionList)
     {
-        //
+        return redirect()->back();
     }
 
     public function answerQuestions(QuestionList $questionList, Question $question)
@@ -148,7 +194,6 @@ class QuestionListController extends Controller
     public function checkAnswer(Request $request, QuestionListItem $questionListItem)
     {
         if ($request->myacc == '1') {
-
             $questionUser = QuestionUser::where('user_id', Auth::user()->id)->where('question_id', $questionListItem->question_id)->first();
 
             if (!$questionUser) {
@@ -158,8 +203,8 @@ class QuestionListController extends Controller
                     'question_id' => $questionListItem->question_id,
                     'last_view' => now(),
                     'next_view' => now()->addDay(1),
-                    'score' => 1,
-                    'factor' => 1,
+                    'score' => 0.25,
+                    'factor' => 1.8,
                     'interval' => 1,
                 ]);
             }
@@ -181,7 +226,6 @@ class QuestionListController extends Controller
         foreach ($questionList->questionListItems as $questionListItem) {
 
             if (!$questionListItem->answer_id) {
-                dd($questionListItem);
                 LogAndFlash::warning('Responda todas as questões antes de finalizar');
                 return redirect()->back();
             }
@@ -191,6 +235,33 @@ class QuestionListController extends Controller
             if ($questionListItem->answer_id == $questionListItem->question->correctAnswer()->id) {
                 $questionListItem->update(['correct' => true]);
             }
+
+            $questionUser = QuestionUser::where('user_id', Auth::user()->id)->where('question_id', $questionListItem->question_id)->first();
+            if (!$questionUser) {
+
+                QuestionUser::create([
+                    'user_id' => Auth::user()->id,
+                    'question_id' => $questionListItem->question_id,
+                    'last_view' => now(),
+                    'next_view' => now()->addDay(1),
+                    'score' => 0.25,
+                    'factor' => 1.8,
+                    'interval' => 1,
+                ]);
+            }
+
+            $newScore = $questionListItem->answer_id == $questionListItem->question->correctAnswer()->id ? 0.15 : -0.35; //acertou 0.15 errado -0.35
+            $newFactor = min(max($questionUser->factor + $newScore, 0.75), 2.50); // 0.75 a 2.50
+            $newInterval = $newFactor * $questionUser->interval;
+            $newView = now()->addDay($newInterval);
+
+            $questionUser->update([
+                'last_view' => now(),
+                'next_view' => $newView,
+                'score' => $newScore,
+                'factor' => $newFactor,
+                'interval' => $newInterval,
+            ]);
         }
 
         $questionList->update([

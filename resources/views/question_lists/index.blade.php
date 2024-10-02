@@ -5,9 +5,7 @@
             <div class="card-header">
                 <h3 class="card-title">Minhas revisões</h3>
                 <div class="card-tools">
-                    <a href="#" class="btn btn-sm btn-primary ml-1" title="Adicionar/Cadastrar">
-                        <i class="fas fa-plus"></i>
-                    </a>
+                    @include('question_lists.create_modal')
                 </div>
             </div>
             <div class="card-body" style="height: calc(100vh - 160px); overflow-y: auto">
@@ -39,7 +37,8 @@
                                 <td class="align-middle">{{ $questionList->count_correct }}</td>
                                 <td class="align-middle">
                                     @if ($questionList->count_total > 0)
-                                        {{ ($questionList->count_correct / $questionList->count_total) * 100 }} %
+                                        {{ number_format(($questionList->count_correct / $questionList->count_total) * 100, 2) }}
+                                        %
                                     @else
                                         0 %
                                     @endif
@@ -88,6 +87,9 @@
                         @endforelse
                     </tbody>
                 </table>
+                <div class="mt-1">
+                    {{ $questionLists->links() }}
+                </div>
             </div>
         </div>
     </div>
