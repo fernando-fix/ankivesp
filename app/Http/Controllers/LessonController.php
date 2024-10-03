@@ -26,10 +26,11 @@ class LessonController extends Controller
     public function showLastWatched(Course $course)
     {
         $lessons = $course->lessons;
-        $lastWatchedLessonId = Watched::where('user_id', Auth::user()->id)->pluck('lesson_id')->last();
-        if (!$lastWatchedLessonId) {
+
+        // $lastWatchedLessonId = Watched::where('user_id', Auth::user()->id)->pluck('lesson_id')->last();
+        // if (!$lastWatchedLessonId) {
             $lastWatchedLessonId = $lessons->first()->id;
-        }
+        // }
         return redirect()->route('lessons.show', $lastWatchedLessonId);
     }
 }
