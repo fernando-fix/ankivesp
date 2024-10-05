@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Course extends Model
 {
@@ -47,5 +48,14 @@ class Course extends Model
     public function getQuestionsAttribute()
     {
         return $this->lessons->flatMap->questions;
+    }
+
+    public function countWatchedLesssons()
+    {
+        $user = Auth::user();
+        $watchedLessonsIds = Watched::where('user_id', $user->id)->pluck('lesson_id')->toArray();
+        return $this->lessons->filter(function ($lesson) use ($watchedLessonsIds) {
+            return in_array($lesson->id, $watchedLessonsIds);
+        })->count();
     }
 }

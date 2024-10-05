@@ -41,7 +41,7 @@
                                         <hr>
                                         Módulos: {{ $course->modules_count }}
                                         <br>
-                                        Aulas: {{ $course->modules->sum('lessons_count') }}
+                                        Aulas assistidas: {{ $course->countWatchedLesssons() }} / {{ $course->modules->sum('lessons_count') }}
                                     </p>
                                     <a href="{{ route('lessons.last-watched', $course->id) }}" class="btn btn-primary">
                                         Acessar
