@@ -10,6 +10,7 @@ use App\Models\QuestionListItem;
 use App\Models\QuestionUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class QuestionListController extends Controller
 {
@@ -37,10 +38,13 @@ class QuestionListController extends Controller
      */
     public function store(Request $request)
     {
+        $errors = [];
         $data = $request->except('_token', 'modal_trigger');
+        DB::beginTransaction();
 
         if (!$data['type'] == 'review') {
             toastr()->error('Tipo de lista inválido');
+            DB::rollBack();
             return redirect()->back();
         }
 
@@ -51,10 +55,15 @@ class QuestionListController extends Controller
 
         if ($questionListExistsInProgress) {
             LogAndFlash::warning('Voce ja possui uma lista de revisão pendente');
+            DB::rollBack();
             return redirect()->route('reviews.first-question', $questionListExistsInProgress);
         }
 
-        $this->_deleteNotFinishedQuestionLists();
+        try {
+            $this->_deleteNotFinishedQuestionLists();
+        } catch (\Exception $e) {
+            $errors[] = $e->getMessage();
+        }
 
         $questionUsers = QuestionUser::where('user_id', Auth::user()->id)->where('next_view', '<', now())->get();
         if ($questionUsers->count() == 0) {
@@ -62,28 +71,51 @@ class QuestionListController extends Controller
             return redirect()->back();
         }
 
-        $newQuestionList = QuestionList::create([
-            'user_id' => Auth::user()->id,
-            'type' => $data['type'],
-            'count_correct' => 0,
-            'count_total' => $questionUsers->count(),
-            'datetime_limit' => now()->addMinutes(30),
-            'finished' => false,
-        ]);
-
-        foreach ($questionUsers as $question) {
-            $newQuestionListItem = QuestionListItem::create([
-                'question_list_id' => $newQuestionList->id,
-                'question_id' => $question->id,
-                'answer_id' => null,
+        try {
+            $newQuestionList = QuestionList::create([
+                'user_id' => Auth::user()->id,
+                'type' => $data['type'],
+                'count_correct' => 0,
+                'count_total' => $questionUsers->count(),
+                'datetime_limit' => now()->addMinutes(30),
+                'finished' => false,
             ]);
+        } catch (\Exception $e) {
+            $errors[] = $e->getMessage();
         }
 
-        $newQuestionList->count_total = $questionUsers->count();
-        $newQuestionList->save();
+        foreach ($questionUsers as $question) {
+            // verificar se question existe
+            $question = Question::where('id', $question->question_id)->first();
+            if ($question) {
+                try {
+                    $newQuestionListItem = QuestionListItem::create([
+                        'question_list_id' => $newQuestionList->id,
+                        'question_id' => $question->id,
+                        'answer_id' => null,
+                    ]);
+                } catch (\Exception $e) {
+                    $errors[] = $e->getMessage();
+                }
+            }
+        }
 
-        LogAndFlash::success('Lista de revisão criada com sucesso', $newQuestionList);
-        return redirect()->route('reviews.first-question', $newQuestionList);
+        try {
+            $newQuestionList->count_total = $questionUsers->count();
+            $newQuestionList->save();
+        } catch (\Exception $e) {
+            $errors[] = $e->getMessage();
+        }
+
+        if (count($errors) == 0) {
+            DB::commit();
+            LogAndFlash::success('Lista de revisão criada com sucesso', $newQuestionList);
+            return redirect()->route('reviews.first-question', $newQuestionList);
+        } else {
+            DB::rollBack();
+            LogAndFlash::error('Erro ao criar lista de revisão', $errors);
+            return redirect()->back();
+        }
     }
 
     /**

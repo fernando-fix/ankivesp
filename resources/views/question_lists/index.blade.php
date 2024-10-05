@@ -12,7 +12,8 @@
                 <table class="table table-sm table-hover table-striped table-bordered align-middle">
                     <thead>
                         <tr>
-                            <th scope="col">Id</th>
+                            {{-- <th scope="col">Id</th> --}}
+                            <th scope="col">Cadastro</th>
                             <th scope="col">Tipo</th>
                             <th scope="col">Total de perguntas</th>
                             <th scope="col">Total de acertos</th>
@@ -25,7 +26,8 @@
                     <tbody>
                         @forelse ($questionLists as $questionList)
                             <tr>
-                                <td class="align-middle">{{ $questionList->id }}</td>
+                                {{-- <td class="align-middle">{{ $questionList->id }}</td> --}}
+                                <td class="align-middle">{{ date('d/m/Y', strtotime($questionList->created_at)) }}</td>
                                 <td class="align-middle">
                                     @if ($questionList->type == 'review')
                                         Revisão
