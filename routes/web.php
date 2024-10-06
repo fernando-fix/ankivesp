@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('lessons', LessonController::class)->only(['show']);
     Route::get('/markWatched/{lesson}', [WatchedController::class, 'markWatched'])->name('markWatched');
     Route::get('/markUnWatched/{lesson}', [WatchedController::class, 'markUnWatched'])->name('markUnWatched');
-    Route::resource('profiles', ProfileController::class);
+    Route::resource('profiles', ProfileController::class)->parameter('profiles', 'user');
 });
 
 // Admin routes

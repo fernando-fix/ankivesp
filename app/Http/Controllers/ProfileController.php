@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\LogAndFlash;
+use App\Http\Requests\ProfileRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -20,7 +20,8 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return redirect()->route('profiles.show', $this->loggedUser->id);
+        $user = User::find(auth()->user()->id);
+        return redirect()->route('profiles.edit', $user);
     }
 
     /**
@@ -28,6 +29,7 @@ class ProfileController extends Controller
      */
     public function show(User $user)
     {
+        return redirect()->route('home');
         if ($user->id != $this->loggedUser->id) {
             LogAndFlash::warning('Sem permissão de acesso!');
             return redirect()->back();
@@ -52,14 +54,30 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(ProfileRequest $request, User $user)
     {
         if ($user->id != $this->loggedUser->id) {
             LogAndFlash::warning('Sem permissão de acesso!');
             return redirect()->back();
         }
 
-        return redirect()->route('profiles.show', $user->id);
+        try {
+            if ($request->password || $request->password_confirmation) {
+                $user->update([
+                    'name' => $request->name,
+                    'password' => bcrypt($request->password),
+                ]);
+            } else {
+                $user->update([
+                    'name' => $request->name,
+                ]);
+            }
+        } catch (\Exception $e) {
+            LogAndFlash::error('Erro ao tentar atualizar o perfil', $e->getMessage());
+        }
+
+        LogAndFlash::success('Registro atualizado com sucesso!', $user);
+        return redirect()->route('profiles.edit', $user->id);
     }
 
     /**

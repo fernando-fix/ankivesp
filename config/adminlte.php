@@ -311,12 +311,12 @@ return [
         //     'can' => 'visualizar_dashboard',
         //     'active' => ['dashboard/*'],
         // ],
-        // [
-        //     'text' => 'Meu perfil',
-        //     'icon' => 'fas fa-fw fa-user',
-        //     'url' => '/profiles',
-        //     'active' => ['profiles/*'],
-        // ],
+        [
+            'text' => 'Meu perfil',
+            'icon' => 'fas fa-fw fa-user',
+            'url' => '/profiles',
+            'active' => ['profiles/*'],
+        ],
         [
             'text' => 'Cursos',
             'icon' => 'fas fa-fw fa-graduation-cap',

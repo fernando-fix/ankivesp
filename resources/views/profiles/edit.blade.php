@@ -13,6 +13,13 @@
             </div>
             <div class="card-body" style="height: calc(100vh - 160px); overflow-y: auto">
                 {{-- conteúdo --}}
+
+                <form action="{{ route('profiles.update', $user) }}" method="POST" >
+                    @csrf
+                    @method('PUT')
+                    @include('profiles.form')
+                </form>
+
             </div>
         </div>
     </div>
