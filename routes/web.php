@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionListController;
+use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\WatchedController;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 
@@ -59,6 +60,9 @@ Route::prefix('admin')
         Route::get('json/lessons/{module}', [AdminLessonController::class, 'indexJson'])->name('json.lessons.index_json');
         Route::resource('modules', AdminModuleController::class);
         Route::resource('lessons', AdminLessonController::class);
+
+        // Updates
+        Route::get('updates', [UpdateController::class, 'index'])->name('updates.index');
 
         Route::get('/rota-de-fuga', function () {
             Illuminate\Support\Facades\Schema::table('question_user', function ($table) {

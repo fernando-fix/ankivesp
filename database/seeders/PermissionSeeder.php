@@ -44,7 +44,8 @@ class PermissionSeeder extends Seeder
         ['Cadastrar aulas',         'Permite cadastrar aulas'],
         ['Editar aulas',            'Permite editar aulas'],
         ['Excluir aulas',           'Permite excluir aulas'],
-
+        // ATUALIZACOES
+        ['Visualizar atualizações', 'Permite visualizar atualizações'],
     ];
 
     /**

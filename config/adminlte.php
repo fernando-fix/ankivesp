@@ -304,6 +304,13 @@ return [
             'url' => '/home',
             'active' => ['home/*'],
         ],
+        [
+            'text' => 'Atualizações',
+            'icon' => 'fas fa-wrench',
+            'url' => 'admin/updates',
+            'active' => ['update/*'],
+            'can' => 'visualizar_atualizacoes',
+        ],
         // [
         //     'text' => 'Dashboard',
         //     'icon' => 'fas fa-tachometer-alt',
