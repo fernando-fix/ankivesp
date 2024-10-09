@@ -15,7 +15,7 @@ class UpdateController extends Controller
             $repo_url = "https://api.github.com/repos/$repo_owner/$repo_name/commits";
             $updates = Http::get($repo_url)->json();
 
-            if ($updates['message'] == 'Not Found') {
+            if (isset($updates['message']) && $updates['message'] == 'Not Found') {
                 $updates = [];
             }
 
