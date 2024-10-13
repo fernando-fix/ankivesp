@@ -24,6 +24,7 @@ class QuestionRequest extends FormRequest
         if ($this->routeIs('questions.store')) {
             return [
                 'question' => ['required', 'string'],
+                'correct_answer' => ['required']
             ];
         }
 
@@ -33,5 +34,13 @@ class QuestionRequest extends FormRequest
                 'question' => ['required', 'string'],
             ];
         }
+    }
+
+    public function messages(): array
+    {
+        return [
+            'question.required' => 'Pergunta é obrigatória',
+            'correct_answer.required' => 'Resposta correta é obrigatória',
+        ];
     }
 }
