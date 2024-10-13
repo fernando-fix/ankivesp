@@ -80,7 +80,10 @@
                     <input type="hidden" name="myacc" id="myacc" value="0">
                     <input type="checkbox" name="myacc" id="myacc" value="1" checked>
                     <label for="myacc">Associar na minha conta</label>
-                    <button type="submit" class="btn btn-sm btn-primary ml-3">Responder</button>
+                    <button type="submit" class="btn btn-sm btn-primary ml-3">
+                        <i class="fas fa-save"></i>
+                        Responder e avançar
+                    </button>
                 </form>
 
             </div>

@@ -247,7 +247,19 @@ class QuestionListController extends Controller
         $questionListItem->update(['answer_id' => $request->answer_id]);
         $questionListItem->save();
 
-        LogAndFlash::success('Resposta registrada', $questionListItem);
+        $questionList = $questionListItem->questionList;
+
+        $notAnsweredQuestions = $questionList->questionListItems()->where('answer_id', null)->get();
+
+        if ($notAnsweredQuestions->count() == 0) {
+            LogAndFlash::success('Resposta registrada, já pode finalizar', $questionListItem);
+            return redirect()->back();
+        } else {
+            LogAndFlash::success('Resposta registrada', $questionListItem);
+            $nextQuestion = $notAnsweredQuestions->first();
+
+            return redirect()->route('reviews.answer-questions', [$questionList, $nextQuestion->question]);
+        }
 
         return redirect()->back();
     }
