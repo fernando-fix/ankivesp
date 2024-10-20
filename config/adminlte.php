@@ -304,13 +304,6 @@ return [
             'url' => '/home',
             'active' => ['home/*'],
         ],
-        [
-            'text' => 'Atualizações',
-            'icon' => 'fas fa-wrench',
-            'url' => 'admin/updates',
-            'active' => ['update/*'],
-            'can' => 'visualizar_atualizacoes',
-        ],
         // [
         //     'text' => 'Dashboard',
         //     'icon' => 'fas fa-tachometer-alt',
@@ -319,22 +312,10 @@ return [
         //     'active' => ['dashboard/*'],
         // ],
         [
-            'text' => 'Meu perfil',
-            'icon' => 'fas fa-fw fa-user',
-            'url' => '/profiles',
-            'active' => ['profiles/*'],
-        ],
-        [
             'text' => 'Cursos',
             'icon' => 'fas fa-fw fa-graduation-cap',
             'url' => '/courses',
             'active' => ['courses/*', 'lessons/*'],
-        ],
-        [
-            'text' => 'Perguntas',
-            'icon' => 'fas fa-fw fa-question',
-            'url' => '/questions',
-            'active' => ['questions/*'],
         ],
         [
             'text' => 'Minhas revisões',
@@ -349,70 +330,83 @@ return [
         //     'active' => ['feedbacks/*'],
         // ],
         [
-            'text' => 'Admin',
+            'text' => 'Atualizações',
+            'icon' => 'fas fa-wrench',
+            'url' => 'admin/updates',
+            'active' => ['update/*'],
+            'can' => 'visualizar_atualizacoes',
+        ],
+        ['header' => 'Painel Administrativo'],
+        [
+            'text' => 'Meu perfil',
             'icon' => 'fas fa-fw fa-user',
-            'can' => ['visualizar_usuarios', 'visualizar_papeis', 'visualizar_cursos', 'visualizar_modulos', 'visualizar_aulas'],
+            'url' => '/profiles',
+            'active' => ['profiles/*'],
+        ],
+        [
+            'text' => 'Usuários',
+            'icon' => 'fas fa-users',
+            'can' => ['visualizar_usuarios', 'visualizar_papeis'],
             'submenu' => [
                 [
                     'text' => 'Usuários',
-                    'icon' => 'fas fa-users',
-                    'can' => ['visualizar_usuarios', 'visualizar_papeis'],
-                    'submenu' => [
-                        [
-                            'text' => 'Usuários',
-                            'url' => '/admin/users',
-                            'icon' => 'fas fa-user',
-                            'can' => 'visualizar_usuarios',
-                            'active' => ['admin/users/*'],
-                        ],
-                        [
-                            'text' => 'Papéis',
-                            'url' => '/admin/roles',
-                            'icon' => 'fas fa-user-tag',
-                            'can' => 'visualizar_papeis',
-                            'active' => ['admin/roles/*'],
-                        ],
-                    ]
+                    'url' => '/admin/users',
+                    'icon' => 'fas fa-user',
+                    'can' => 'visualizar_usuarios',
+                    'active' => ['admin/users/*'],
                 ],
+                [
+                    'text' => 'Papéis',
+                    'url' => '/admin/roles',
+                    'icon' => 'fas fa-user-tag',
+                    'can' => 'visualizar_papeis',
+                    'active' => ['admin/roles/*'],
+                ],
+            ]
+        ],
+        [
+            'text' => 'Cursos',
+            'icon' => 'fas fa-graduation-cap',
+            'can' => ['visualizar_cursos', 'visualizar_modulos', 'visualizar_aulas'],
+            'active' => ['admin/courses/*'],
+            'submenu' => [
                 [
                     'text' => 'Cursos',
+                    'url' => '/admin/courses',
                     'icon' => 'fas fa-graduation-cap',
-                    'can' => ['visualizar_cursos', 'visualizar_modulos', 'visualizar_aulas'],
+                    'can' => 'visualizar_cursos',
                     'active' => ['admin/courses/*'],
-                    'submenu' => [
-                        [
-                            'text' => 'Cursos',
-                            'url' => '/admin/courses',
-                            'icon' => 'fas fa-graduation-cap',
-                            'can' => 'visualizar_cursos',
-                            'active' => ['admin/courses/*'],
-                        ],
-                        [
-                            'text' => 'Módulos',
-                            'url' => '/admin/modules',
-                            'icon' => 'fas fa-folder-open',
-                            'can' => 'visualizar_modulos',
-                            'active' => ['admin/modules/*'],
-                        ],
-                        [
-                            'text' => 'Aulas',
-                            'url' => '/admin/lessons',
-                            'icon' => 'fas fa-chalkboard-teacher',
-                            'can' => 'visualizar_aulas',
-                            'active' => ['admin/lessons/*'],
-                        ],
-                    ],
                 ],
                 [
-                    'text' => 'Logs',
-                    'icon' => 'fas fa-fw fa-file',
-                    'url' => '/admin/logs',
-                    'target' => '_blank',
-                    'can' => 'visualizar_logs',
-                    'active' => ['admin/logs/*'],
-                ]
+                    'text' => 'Módulos',
+                    'url' => '/admin/modules',
+                    'icon' => 'fas fa-folder-open',
+                    'can' => 'visualizar_modulos',
+                    'active' => ['admin/modules/*'],
+                ],
+                [
+                    'text' => 'Aulas',
+                    'url' => '/admin/lessons',
+                    'icon' => 'fas fa-chalkboard-teacher',
+                    'can' => 'visualizar_aulas',
+                    'active' => ['admin/lessons/*'],
+                ],
+                [
+                    'text' => 'Perguntas',
+                    'icon' => 'fas fa-fw fa-question',
+                    'url' => '/questions',
+                    'active' => ['questions/*'],
+                ],
             ],
         ],
+        [
+            'text' => 'Logs',
+            'icon' => 'fas fa-fw fa-file',
+            'url' => '/admin/logs',
+            'target' => '_blank',
+            'can' => 'visualizar_logs',
+            'active' => ['admin/logs/*'],
+        ]
     ],
 
     /*
