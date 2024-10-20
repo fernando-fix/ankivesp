@@ -67,6 +67,7 @@ class QuestionListController extends Controller
 
         $questionUsers = QuestionUser::where('user_id', Auth::user()->id)->where('next_view', '<', now())->get();
         if ($questionUsers->count() == 0) {
+            DB::rollBack();
             LogAndFlash::success('Nenhuma questão para revisão');
             return redirect()->back();
         }
