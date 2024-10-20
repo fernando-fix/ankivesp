@@ -36,6 +36,10 @@
                                 @endif
                             </a>
                         @endforeach
+                        <div class="mt-2 h4">
+                            Prazo:
+                            <span id="countdown" class="text-secondary"></span>
+                        </div>
                     </div>
                     <div class="mr-3">
                         <h2>Legenda:</h2>
@@ -90,3 +94,40 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+    <script>
+        // const agora = new Date();
+        // const dataFinal = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), agora.getHours(), agora.getMinutes() + 1).getTime();
+
+        const dataFinal = new Date('{{ $questionList->datetime_limit }}').getTime();
+
+        const intervalo = setInterval(() => {
+            const agora = new Date().getTime();
+            const distancia = dataFinal - agora;
+
+            let dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+            let horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+            let segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+            minutos = Math.max(minutos, 0);
+            segundos = Math.max(segundos, 0);
+
+            // Adicionar zero à esquerda se minutos ou segundos forem menores que 10
+            minutos = minutos < 10 ? '0' + minutos : minutos;
+            segundos = segundos < 10 ? '0' + segundos : segundos;
+
+            document.getElementById('countdown').innerHTML = `${minutos}m ${segundos}s`;
+
+            if (distancia <= 0) {
+
+                clearInterval(intervalo);
+
+                alert('Tempo esgotado! Redirecionando para página inicial...');
+
+                window.location.href = "{{ route('reviews.index') }}";
+            }
+        }, 1000);
+    </script>
+@endpush
