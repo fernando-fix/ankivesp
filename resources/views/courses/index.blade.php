@@ -41,11 +41,32 @@
                                         <hr>
                                         Módulos: {{ $course->modules_count }}
                                         <br>
-                                        Aulas assistidas: {{ $course->countWatchedLesssons() }} / {{ $course->modules->sum('lessons_count') }}
+                                        Aulas assistidas: {{ $course->countWatchedLesssons() }} /
+                                        {{ $course->modules->sum('lessons_count') }}
                                     </p>
+
+                                    @if ($course->modules->sum('lessons_count') > 0)
+                                        <div class="progress my-2 rounded">
+                                            <div class="progress-bar" role="progressbar"
+                                                aria-valuenow="{{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}"
+                                                aria-valuemin="0" aria-valuemax="100"
+                                                style="width: {{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}%">
+                                                {{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}%
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="progress my-2 rounded">
+                                            <div class="progress-bar" role="progressbar"
+                                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                                style="width: 0%">
+                                            </div>
+                                        </div>
+                                    @endif
+
                                     <a href="{{ route('lessons.last-watched', $course->id) }}" class="btn btn-primary">
                                         Acessar
                                     </a>
+                                    
                                 </div>
                             </div>
                         @endif
