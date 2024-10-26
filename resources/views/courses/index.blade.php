@@ -33,45 +33,48 @@
                                     </a>
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        <i class="fas fa-graduation-cap"></i>
-                                        {{ $course->name }}
-                                    </h5>
-                                    <p class="card-text">
-                                        <hr>
-                                        Módulos: {{ $course->modules_count }}
-                                        <br>
-                                        Aulas assistidas: {{ $course->countWatchedLesssons() }} /
-                                        {{ $course->modules->sum('lessons_count') }}
-                                    </p>
+                                    <div class="d-flex flex-column justify-content-between h-100">
+                                        <h5 class="card-title">
+                                            <i class="fas fa-graduation-cap"></i>
+                                            {{ $course->name }}
+                                        </h5>
+                                        <p class="card-text">
+                                            <hr>
+                                            Módulos: {{ $course->modules_count }}
+                                            <br>
+                                            Aulas assistidas: {{ $course->countWatchedLesssons() }} /
+                                            {{ $course->modules->sum('lessons_count') }}
+                                        </p>
 
-                                    @if ($course->modules->sum('lessons_count') > 0)
-                                        <div class="progress my-2 rounded">
-                                            <div class="progress-bar" role="progressbar"
-                                                aria-valuenow="{{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}"
-                                                aria-valuemin="0" aria-valuemax="100"
-                                                style="width: {{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}%">
-                                                {{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}%
+                                        @if ($course->modules->sum('lessons_count') > 0)
+                                            <div class="progress my-2 rounded">
+                                                <div class="progress-bar" role="progressbar"
+                                                    aria-valuenow="{{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}"
+                                                    aria-valuemin="0" aria-valuemax="100"
+                                                    style="width: {{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}%">
+                                                    {{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}%
+                                                </div>
                                             </div>
-                                        </div>
-                                    @else
-                                        <div class="progress my-2 rounded">
-                                            <div class="progress-bar" role="progressbar"
-                                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                                                style="width: 0%">
+                                        @else
+                                            <div class="progress my-2 rounded">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="0"
+                                                    aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                                </div>
                                             </div>
-                                        </div>
-                                    @endif
+                                        @endif
 
-                                    <a href="{{ route('lessons.last-watched', $course->id) }}" class="btn btn-primary">
-                                        Acessar
-                                    </a>
-                                    
+                                        <div class="mt-2">
+                                            <a href="{{ route('lessons.last-watched', $course->id) }}"
+                                                class="btn btn-sm btn-primary">
+                                                Acessar
+                                            </a>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         @endif
                     @endforeach
-
                 </div>
             </div>
         </div>
