@@ -21,9 +21,9 @@ class QuestionController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = $request->all();
+        $filter = $request->except('_token');
 
-        $questions = Question::search()->with('answers', 'module', 'lesson')->paginate($this->pagination);
+        $questions = Question::search($filter)->with('answers', 'module', 'lesson')->paginate($this->pagination);
         $courses = Course::get();
         $modules = Module::get();
         $lessons = Lesson::get();

@@ -45,9 +45,29 @@ class Question extends Model
     public static function search($filter = null)
     {
         $search = Question::where(function ($query) use ($filter) {
-            if (isset($filter['seila'])) {
-                $query->where('question', 'LIKE', "%{$filter['seila']}%");
+
+            if (isset($filter['course_id'])) {
+                $query->whereHas('module', function ($query) use ($filter) {
+                    $query->whereHas('course', function ($query) use ($filter) {
+                        $query->where('course_id', $filter['course_id']);
+                    });
+                });
             }
+
+            if (isset($filter['module_id'])) {
+                $query->whereHas('module', function ($query) use ($filter) {
+                    $query->where('module_id', $filter['module_id']);
+                });
+            }
+
+            if (isset($filter['lesson_id'])) {
+                $query->where('lesson_id', $filter['lesson_id']);
+            }
+
+            if (isset($filter['question'])) {
+                $query->where('question', 'like', '%' . $filter['question'] . '%');
+            }
+
         });
 
         return $search;
