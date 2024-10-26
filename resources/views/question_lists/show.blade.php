@@ -15,24 +15,23 @@
                 <table class="table table-sm table-hover table-striped table-bordered align-middle">
                     <thead>
                         <tr>
-                            <th scope="col">Id</th>
                             <th scope="col">Perguntas</th>
                             <th scope="col">Respostas</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @dd($questionList) --}}
 
                         @forelse ($questionList->questionListItems as $key => $questionListItem)
                             <tr>
-                                <td>{{ $questionListItem->id }}</td>
                                 <td>
                                     <div class="d-flex">
                                         <div>
                                             <span class="mr-2 badge badge-primary">{{ $key + 1 }}
                                             </span>
                                         </div>
-                                        {!! $questionListItem->question->question !!}
+                                        <div>
+                                            {!! $questionListItem->question->question !!}
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
@@ -45,11 +44,11 @@
                                                         <span class="mr-2 badge badge-success">{{ $key + 1 }} </span>
                                                     @else
                                                         @if ($answer->id == $questionListItem->answer_id)
-                                                        <span class="mr-2 badge badge-danger">{{ $key + 1 }}
-                                                        </span>
+                                                            <span class="mr-2 badge badge-danger">{{ $key + 1 }}
+                                                            </span>
                                                         @else
-                                                        <span class="mr-2 badge badge-secondary">{{ $key + 1 }}
-                                                        </span>
+                                                            <span class="mr-2 badge badge-secondary">{{ $key + 1 }}
+                                                            </span>
                                                         @endif
                                                     @endif
                                                 @else
