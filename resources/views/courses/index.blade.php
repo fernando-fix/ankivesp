@@ -52,7 +52,11 @@
                                                     aria-valuenow="{{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}"
                                                     aria-valuemin="0" aria-valuemax="100"
                                                     style="width: {{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}%">
-                                                    {{ ($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100 }}%
+                                                    @if ($course->modules->sum('lessons_count') > 0)
+                                                        {{ number_format(($course->countWatchedLesssons() / $course->modules->sum('lessons_count')) * 100, 2) }}%
+                                                    @else
+                                                        0%
+                                                    @endif
                                                 </div>
                                             </div>
                                         @else
