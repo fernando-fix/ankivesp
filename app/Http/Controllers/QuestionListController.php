@@ -319,6 +319,14 @@ class QuestionListController extends Controller
         return redirect()->route('reviews.index');
     }
 
+    public function giveUp(Request $request, QuestionList $questionList)
+    {
+        $questionList->delete();
+
+        LogAndFlash::success('Lista de questões excluída com sucesso', $questionList);
+        return redirect()->route('reviews.index');
+    }
+
     public function _deleteNotFinishedQuestionLists()
     {
         $questionListExistsNotFinished = QuestionList::with('questionListItems')->where('user_id', Auth::user()->id)

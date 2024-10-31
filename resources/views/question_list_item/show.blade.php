@@ -56,14 +56,25 @@
                     <h4>{!! $question->question !!}</h4>
 
                     {{-- Botão entregar questionário --}}
-                    <div>
-                        <form action="{{ route('reviews.check-all-answers', $questionList) }}" method="POST">
-                            @csrf
-                            <button class="btn btn-sm btn-primary" type="submit">
-                                <i class="fas fa-paper-plane"></i>
-                                Entregar questionário
-                            </button>
-                        </form>
+                    <div class="d-flex flex-column">
+                        <div class="mt-2">
+                            <form action="{{ route('reviews.check-all-answers', $questionList) }}" method="POST">
+                                @csrf
+                                <button class="btn btn-sm btn-primary" type="submit">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Entregar questionário
+                                </button>
+                            </form>
+                        </div>
+                        <div class="mt-2">
+                            <form action="{{ route('reviews.give-up', $questionList) }}" method="POST">
+                                @csrf
+                                <button class="btn btn-sm btn-danger" type="submit">
+                                    <i class="fas fa-ban"></i>
+                                    Desistir do questionário
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
