@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/reviews/{questionList}/question/{question}', [QuestionListController::class, 'answerQuestions'])->name('reviews.answer-questions');
     Route::post('/reviews/check-answer/{questionListItem}', [QuestionListController::class, 'checkAnswer'])->name('reviews.check-answer');
     Route::post('/reviews/check-all-answers/{questionList}', [QuestionListController::class, 'checkAllAnswers'])->name('reviews.check-all-answers');
+    Route::post('/reviews/give-up/{questionList}', [QuestionListController::class, 'giveUp'])->name('reviews.give-up');
     Route::get('/lessons/last-watched/{course}', [LessonController::class, 'showLastWatched'])->name('lessons.last-watched');
     Route::resource('lessons', LessonController::class)->only(['show']);
     Route::get('/markWatched/{lesson}', [WatchedController::class, 'markWatched'])->name('markWatched');
