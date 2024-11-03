@@ -31,6 +31,30 @@
                         <label for="type" class="form-check-label">Nova revisão diária</label>
                     </div>
 
+                    {{-- input select com número de questões --}}
+                    <div class="form-group">
+                        <label for="questions_number">Quantidade de questões</label>
+                        <select name="questions_number" id="questions_number" class="form-control">
+                            <option value="0">Sem limite</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                        </select>
+                    </div>
+
+                    {{-- input select com tempo em minutos --}}
+                    <div class="form-group">
+                        <label for="duration">Duração em minutos</label>
+                        <select name="duration" id="duration" class="form-control">
+                            <option value="15">15 minutos</option>
+                            <option value="20">20 minutos</option>
+                            <option value="30">30 minutos</option>
+                            <option value="60">1 hora</option>
+                        </select>
+                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">

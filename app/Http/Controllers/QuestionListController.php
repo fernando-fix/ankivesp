@@ -65,7 +65,14 @@ class QuestionListController extends Controller
             $errors[] = $e->getMessage();
         }
 
-        $questionUsers = QuestionUser::where('user_id', Auth::user()->id)->where('next_view', '<', now())->get();
+        if (isset($data['questions_number']) && $data['questions_number'] == 0) {
+            $questionUsers = QuestionUser::where('user_id', Auth::user()->id)->where('next_view', '<', now())->get();
+        } else {
+            $questionUsers = QuestionUser::where('user_id', Auth::user()->id)->where('next_view', '<', now())->take($data['questions_number'] ?? 0)->get();
+        }
+
+        $duration = (float) ($data['duration'] ?? 30);
+
         if ($questionUsers->count() == 0) {
             DB::rollBack();
             LogAndFlash::success('Nenhuma questão para revisão');
@@ -78,7 +85,7 @@ class QuestionListController extends Controller
                 'type' => $data['type'],
                 'count_correct' => 0,
                 'count_total' => $questionUsers->count(),
-                'datetime_limit' => now()->addMinutes(30),
+                'datetime_limit' => now()->addMinutes($duration),
                 'finished' => false,
             ]);
         } catch (\Exception $e) {
