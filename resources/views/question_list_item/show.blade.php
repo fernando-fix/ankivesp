@@ -131,6 +131,12 @@
 
             document.getElementById('countdown').innerHTML = `${minutos}m ${segundos}s`;
 
+            if (minutos < 5) {
+                if (!document.getElementById('countdown').classList.contains('bg-danger')) {
+                    document.getElementById('countdown').classList.add('bg-danger');
+                }
+            }
+
             if (distancia <= 0) {
 
                 clearInterval(intervalo);
