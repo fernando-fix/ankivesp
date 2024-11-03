@@ -23,25 +23,25 @@
                                 href="{{ route('reviews.answer-questions', [$questionList, $questionListItem->question]) }}" @endif>
                                 @if ($questionListItem->answer_id != null)
                                     @if ($questionListItem->question_id == $question->id)
-                                        <span class="btn btn-success px-3 py-1">{{ $key + 1 }}</span>
+                                        <span class="mt-1 btn btn-success px-3 py-1">{{ $key + 1 }}</span>
                                     @else
-                                        <span class="btn btn-primary px-3 py-1">{{ $key + 1 }}</span>
+                                        <span class="mt-1 btn btn-primary px-3 py-1">{{ $key + 1 }}</span>
                                     @endif
                                 @else
                                     @if ($questionListItem->question_id == $question->id)
-                                        <span class="btn btn-success px-3 py-1">{{ $key + 1 }}</span>
+                                        <span class="mt-1 btn btn-success px-3 py-1">{{ $key + 1 }}</span>
                                     @else
-                                        <span class="btn btn-secondary px-3 py-1">{{ $key + 1 }}</span>
+                                        <span class="mt-1 btn btn-secondary px-3 py-1">{{ $key + 1 }}</span>
                                     @endif
                                 @endif
                             </a>
                         @endforeach
                         <div class="mt-2 h4">
                             Prazo:
-                            <span id="countdown" class="text-secondary"></span>
+                            <span id="countdown" class="text-secondary"></span> | <span class="text-danger">Ao encerrar o prazo o questionário será excluído</span>
                         </div>
                     </div>
-                    <div class="mr-3">
+                    <div class="mr-3 ml-3">
                         <h2>Legenda:</h2>
                         <span class="badge badge-primary px-2 py-1">Respondido</span> <br>
                         <span class="badge badge-secondary px-2 py-1">Não respondido</span><br>
