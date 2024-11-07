@@ -11,7 +11,9 @@
                     {{-- <button class="btn btn-sm btn-primary ml-1" title="Pesquisar/Filtrar">
                         <i class="fas fa-filter"></i>
                     </button> --}}
-                    @include('admin.roles.create_modal')
+                    @can('cadastrar_papeis')
+                        @include('admin.roles.create_modal')
+                    @endcan
                 </div>
             </div>
             <div class="card-body" style="height: calc(100vh - 160px); overflow-y: auto">

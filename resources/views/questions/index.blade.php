@@ -9,7 +9,9 @@
                 </h3>
                 <div class="card-tools">
                     @include('questions.filter_modal')
-                    @include('questions.create_modal')
+                    @can('cadastrar_perguntas')
+                        @include('questions.create_modal')
+                    @endcan
                 </div>
             </div>
             <div class="card-body" style="height: calc(100vh - 160px); overflow-y: auto">
@@ -35,33 +37,40 @@
                                 <td class="align-middle">{{ strip_tags($question->question) }}</td>
                                 <td class="align-middle">{{ count($question->answers) }}</td>
                                 <td class="align-middle" style="white-space: nowrap$question->question ;">
-                                    {{-- botões --}}
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" title="Mais Opções">
-                                            <i class="fas fa-bars"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-right">
-                                            <li>
-                                                @include('questions.edit_modal_trigger', [
-                                                    'question' => $question,
-                                                ])
-                                            </li>
-                                            {{-- deletar pergunta --}}
-                                            <li>
-                                                <form action="{{ route('questions.destroy', $question) }}" method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="dropdown-item" href="#"
-                                                        title="Excluir"
-                                                        onclick="return confirm('Deseja realmente excluir este registro?');">
-                                                        <i class="fas fa-trash text-danger"></i>
-                                                        Excluir
-                                                    </button>
-                                                </form>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    @canany(['editar_perguntas', 'excluir_perguntas'])
+                                        {{-- botões --}}
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle"
+                                                data-toggle="dropdown" title="Mais Opções">
+                                                <i class="fas fa-bars"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                @can('editar_perguntas')
+                                                    <li>
+                                                        @include('questions.edit_modal_trigger', [
+                                                            'question' => $question,
+                                                        ])
+                                                    </li>
+                                                @endcan
+
+                                                {{-- deletar pergunta --}}
+                                                @can('excluir_perguntas')
+                                                    <li>
+                                                        <form action="{{ route('questions.destroy', $question) }}" method="post">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="dropdown-item" href="#"
+                                                                title="Excluir"
+                                                                onclick="return confirm('Deseja realmente excluir este registro?');">
+                                                                <i class="fas fa-trash text-danger"></i>
+                                                                Excluir
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                @endcan
+                                            </ul>
+                                        </div>
+                                    @endcanany
                                 </td>
                                 @include('questions.edit_modal_body', ['question' => $question])
                             </tr>

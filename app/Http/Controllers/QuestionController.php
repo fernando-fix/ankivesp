@@ -11,6 +11,7 @@ use App\Models\Module;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class QuestionController extends Controller
 {
@@ -44,43 +45,48 @@ class QuestionController extends Controller
      */
     public function store(QuestionRequest $request)
     {
-        DB::beginTransaction();
-        $data = $request->except(['_token', 'modal_trigger']);
-        $errors = [];
-
-        try {
-            $question = Question::create([
-                'question' => $data['question'],
-                'lesson_id' => $data['lesson_id'],
-            ]);
-        } catch (\Exception $e) {
-            $errors[] = $e->getMessage();
-        }
-
-        foreach ($data['answers'] as $key => $answer) {
-
+        if (Gate::allows('cadastrar_perguntas')) {
+            DB::beginTransaction();
+            $data = $request->except(['_token', 'modal_trigger']);
+            $errors = [];
 
             try {
-                Answer::create([
-                    'question_id' => $question->id,
-                    'answer' => $answer['answer'],
-                    'correct' => $data['correct_answer'] == "answer_" . ($key + 1) ? true : false,
+                $question = Question::create([
+                    'question' => $data['question'],
+                    'lesson_id' => $data['lesson_id'],
                 ]);
             } catch (\Exception $e) {
                 $errors[] = $e->getMessage();
             }
-            $dd[] = $data['correct_answer'];
+
+            foreach ($data['answers'] as $key => $answer) {
+
+
+                try {
+                    Answer::create([
+                        'question_id' => $question->id,
+                        'answer' => $answer['answer'],
+                        'correct' => $data['correct_answer'] == "answer_" . ($key + 1) ? true : false,
+                    ]);
+                } catch (\Exception $e) {
+                    $errors[] = $e->getMessage();
+                }
+                $dd[] = $data['correct_answer'];
+            }
+
+            if (count($errors) == 0) {
+                DB::commit();
+                LogAndFlash::success('Registro criado com sucesso!', ['question' => $question]);
+                return redirect()->route('questions.index');
+            } else {
+                DB::rollBack();
+                LogAndFlash::error('Erro ao tentar criar o registro!', $errors);
+                return redirect()->back();
+            }
         }
 
-        if (count($errors) == 0) {
-            DB::commit();
-            LogAndFlash::success('Registro criado com sucesso!', ['question' => $question]);
-            return redirect()->route('questions.index');
-        } else {
-            DB::rollBack();
-            LogAndFlash::error('Erro ao tentar criar o registro!', $errors);
-            return redirect()->back();
-        }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 
     /**
@@ -104,48 +110,61 @@ class QuestionController extends Controller
      */
     public function update(QuestionRequest $request, Question $question)
     {
-        DB::beginTransaction();
-        $data = $request->except(['_token', 'modal_trigger']);
-        $errors = [];
+        if (Gate::allows('editar_perguntas')) {
+            DB::beginTransaction();
+            $data = $request->except(['_token', 'modal_trigger']);
+            $errors = [];
 
-        try {
-            $question->update([
-                'lesson_id' => $data['lesson_id'],
-                'question' => $data['question'],
-            ]);
-        } catch (\Exception $e) {
-            $errors[] = $e->getMessage();
-        }
-
-        $answers = $data['answers'];
-
-        try {
-            foreach ($answers as $key => $answer) {
-                if (isset($answer['answer_id'])) {
-                    $answerUpd = Answer::find($answer['answer_id']);
-                    $answerUpd->answer = $answer['answer'];
-                    $answerUpd->correct = $data['correct_answer'] == "answer_" . ($key + 1) ? true : false;
-                    $answerUpd->save();
-                }
+            try {
+                $question->update([
+                    'lesson_id' => $data['lesson_id'],
+                    'question' => $data['question'],
+                ]);
+            } catch (\Exception $e) {
+                $errors[] = $e->getMessage();
             }
-        } catch (\Exception $e) {
-            throw $e;
-            $errors[] = $e->getMessage();
-        }
 
-        if (count($errors) == 0) {
-            DB::commit();
-            LogAndFlash::success('Registro atualizado com sucesso!', ['question' => $question]);
-            return redirect()->route('questions.index');
-        } else {
-            DB::rollBack();
-            LogAndFlash::error('Erro ao tentar atualizar o registro!', $errors);
-            return redirect()->back();
+            $answers = $data['answers'];
+
+            try {
+                foreach ($answers as $key => $answer) {
+                    if (isset($answer['answer_id'])) {
+                        $answerUpd = Answer::find($answer['answer_id']);
+                        $answerUpd->answer = $answer['answer'];
+                        $answerUpd->correct = $data['correct_answer'] == "answer_" . ($key + 1) ? true : false;
+                        $answerUpd->save();
+                    }
+                }
+            } catch (\Exception $e) {
+                throw $e;
+                $errors[] = $e->getMessage();
+            }
+
+            if (count($errors) == 0) {
+                DB::commit();
+                LogAndFlash::success('Registro atualizado com sucesso!', ['question' => $question]);
+                return redirect()->route('questions.index');
+            } else {
+                DB::rollBack();
+                LogAndFlash::error('Erro ao tentar atualizar o registro!', $errors);
+                return redirect()->back();
+            }
         }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Question $question) {}
+    public function destroy(Question $question)
+    {
+        if (Gate::allows('excluir_perguntas')) {
+            $question->delete();
+            LogAndFlash::success('Registro excluido com sucesso!', ['question' => $question]);
+            return redirect()->route('questions.index');
+        }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
+    }
 }

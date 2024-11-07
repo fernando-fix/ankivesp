@@ -46,6 +46,10 @@ class PermissionSeeder extends Seeder
         ['Excluir aulas',           'Permite excluir aulas'],
         // ATUALIZACOES
         ['Visualizar atualizações', 'Permite visualizar atualizações'],
+        // QUESTIONS
+        ['Cadastrar perguntas',      'Permite cadastrar perguntas'],
+        ['Editar perguntas',         'Permite editar perguntas'],
+        ['Excluir perguntas',        'Permite excluir perguntas'],
     ];
 
     /**
@@ -56,7 +60,7 @@ class PermissionSeeder extends Seeder
         foreach ($this->permissions as $permission) {
             $slug = Str::slug($permission[0]);
             $slug_underscore = Str::of($slug)->replace('-', '_');
-            if (!Permission::where('slug', $slug)->exists()) {
+            if (!Permission::where('slug', $slug_underscore)->exists()) { // Changed to check against slug_underscore
                 Permission::create([
                     'name' => $permission[0],
                     'description' => $permission[1],
