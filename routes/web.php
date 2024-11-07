@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\LogAndFlash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourseController;
@@ -14,6 +15,11 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionListController;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\WatchedController;
+use App\Models\Question;
+use App\Models\QuestionList;
+use App\Models\QuestionUser;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 
 require __DIR__ . '/auth.php';
@@ -71,3 +77,29 @@ Route::prefix('admin')
             });
         });
     });
+
+Route::get('visitant', function () {
+    $user = User::find(5);
+    if ($user) {
+
+        QuestionUser::where('user_id', 5)->delete();
+        QuestionList::where('user_id', 5)->delete();
+        $questions = Question::get();
+        foreach ($questions as $question) {
+            QuestionUser::create([
+                'user_id'       => 5,
+                'question_id'   => $question->id,
+                'last_view'     => now(),
+                'next_view'     => now(),
+                'score'         => 0.25,
+                'factor'        => 1.8,
+                'interval'      => 1,
+            ]);
+        }
+
+        Auth::login($user);
+        LogAndFlash::success('Visitante autenticado com sucesso!', $user);
+        return redirect()->route('home');
+    }
+    return redirect()->route('login');
+})->name('visitant');
