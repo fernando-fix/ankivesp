@@ -38,7 +38,14 @@
                         @endforeach
                         <div class="mt-2 h4">
                             Prazo:
-                            <span id="countdown" class="text-secondary"></span> | <span class="text-danger">Ao encerrar o prazo o questionário será excluído</span>
+                            <span id="countdown" class="text-secondary">
+                                @php
+                                    $time = (new DateTime())->diff(new DateTime($questionList->datetime_limit));
+                                    $minutes = str_pad($time->format('%i'), 2, '0', STR_PAD_LEFT);
+                                    $seconds = str_pad($time->format('%s'), 2, '0', STR_PAD_LEFT);
+                                @endphp
+                                {{ $minutes }}m {{ $seconds }}s
+                            </span> | <span class="text-danger">Ao encerrar o prazo o questionário será excluído</span>
                         </div>
                     </div>
                     <div class="mr-3 ml-3">
@@ -83,10 +90,11 @@
                 <form action="{{ route('reviews.check-answer', $questionListItemActive) }}" method="post">
                     @csrf
                     @foreach ($question->answers as $answer)
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="answer_id" id="answer-{{ $answer->id }}"
-                                value="{{ $answer->id }}" required @if ($questionListItemActive->answer_id == $answer->id) checked @endif>
-                            <label class="form-check-label mb-2"
+                        <div class="form-check input-hover">
+                            <input class="form-check-input" role="button" type="radio" name="answer_id"
+                                id="answer-{{ $answer->id }}" value="{{ $answer->id }}" required
+                                @if ($questionListItemActive->answer_id == $answer->id) checked @endif>
+                            <label class="form-check-label mb-2" role="button"
                                 for="answer-{{ $answer->id }}">{!! $answer->answer !!}</label>
                         </div>
                     @endforeach
