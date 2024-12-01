@@ -107,6 +107,29 @@
     </div>
 </div>
 
+{{-- Transcription --}}
+<div class="form-row">
+    <div class="form-group col-12">
+        <label for="transcription">
+            Transcrição
+            @if (isset($lesson) && $lesson->video_id)
+                <a type="button" href="https://ytscribe.com/pt/v/{{ $lesson->video_id }}" title="Visualizar"
+                    target="_blank">
+                    <i class="fas fa-external-link-alt"></i>
+                    Transcrição
+                </a>
+            @endif
+        </label>
+        <textarea class="form-control js_transcript @error('transcription') is-invalid @enderror"
+            id="transcription-{{ $lesson->id ?? '' }}" name="transcription" rows="3">{{ old('transcription', $lesson->transcription ?? '') }}</textarea>
+        @error('transcription')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
+</div>
+
 {{-- File (PDF) --}}
 {{-- <div class="form-row">
     <div class="form-group col-12">
@@ -156,6 +179,15 @@
                             }
                         }
                     });
+                });
+            });
+
+            // Auto resize textarea
+            let transcripts = document.querySelectorAll('.js_transcript');
+            transcripts.forEach(transcript => {
+                transcript.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = this.scrollHeight + 'px';
                 });
             });
         </script>

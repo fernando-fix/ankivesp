@@ -25,7 +25,8 @@
                             <th scope="col">Curso</th>
                             <th scope="col">Módulo</th>
                             <th scope="col">Tipo</th>
-                            <th scope="col">Posição</th>
+                            <th scope="col">Perguntas</th>
+                            <th scope="col">Transcrição</th>
                             <th scope="col">Cadastro</th>
                             <th scope="col" width=1>Ações</th>
                         </tr>
@@ -38,10 +39,28 @@
                                 <td class="align-middle">{{ $lesson->course->name }}</td>
                                 <td class="align-middle">{{ $lesson->module->name }}</td>
                                 <td class="align-middle">{{ $lesson->type }}</td>
-                                <td class="align-middle">{{ $lesson->position }}</td>
+                                <td class="align-middle text-center">
+                                    @if ($lesson->questions->count() > 0)
+                                        <a href="{{ route('questions.index', ['lesson_id' => $lesson->id]) }}"
+                                            title="Perguntas" class="text-decoration-none" target="_blank">
+                                            <i class="fas fa-question-circle text-info"></i>
+                                            {{ $lesson->questions->count() }}
+                                        </a>
+                                    @else
+                                        <i class="fas fa-question-circle text-secondary"></i>
+                                        0
+                                    @endif
+                                </td>
+                                <td class="align-middle text-center">
+                                    @if ($lesson->transcription)
+                                        <i class="fas fa-check text-success"></i>
+                                    @else
+                                        <i class="fas fa-times text-danger"></i>
+                                    @endif
+                                </td>
                                 <td class="align-middle">{{ date('d/m/Y', strtotime($lesson->created_at)) }}</td>
                                 <td class="align-middle" style="white-space: nowrap;">
-                                    @canany(['visualizar_aulas', 'editar_aulas', 'excluir_aulas'])
+                                    @canany(['visualizar_aulas', 'gerar_perguntas', 'editar_aulas', 'excluir_aulas'])
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-primary dropdown-toggle"
                                                 data-toggle="dropdown" title="Mais Opções">
@@ -49,6 +68,14 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-right">
                                                 @can('visualizar_aulas')
+                                                    <li>
+                                                        <a type="button" class="dropdown-item"
+                                                            href="{{ route('lessons.show', $lesson) }}" title="Visualizar"
+                                                            target="_blank">
+                                                            <i class="fas fa-eye text-info"></i>
+                                                            Visualizar
+                                                        </a>
+                                                    </li>
                                                     <li>
                                                         @if ($lesson->type == 'youtube')
                                                             <a type="button" href="{{ $lesson->url }}" target="_blank"
@@ -71,14 +98,29 @@
                                                         @endif
                                                     </li>
                                                 @endcan
+                                                @can('gerar_perguntas')
+                                                    <li>
+                                                        <form action="{{ route('generate-questions', $lesson->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="dropdown-item">
+                                                                <i class="fas fa-question-circle text-primary"></i>
+                                                                Gerar Perguntas (GPT)
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                @endcan
                                                 @can('editar_aulas')
                                                     <li>
-                                                        @include('admin.lessons.edit_modal_trigger', $lesson)
+                                                        @include(
+                                                            'admin.lessons.edit_modal_trigger',
+                                                            $lesson)
                                                     </li>
                                                 @endcan
                                                 @can('excluir_aulas')
                                                     <li>
-                                                        <form action="{{ route('admin.lessons.destroy', $lesson) }}" method="post">
+                                                        <form action="{{ route('admin.lessons.destroy', $lesson) }}"
+                                                            method="post">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="dropdown-item" href="#"

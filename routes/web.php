@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/markWatched/{lesson}', [WatchedController::class, 'markWatched'])->name('markWatched');
     Route::get('/markUnWatched/{lesson}', [WatchedController::class, 'markUnWatched'])->name('markUnWatched');
     Route::resource('profiles', ProfileController::class)->parameter('profiles', 'user');
+    Route::post('/generate-questions/{lesson}', [QuestionController::class, 'generateQuestions'])->name('generate-questions');
 });
 
 // Admin routes

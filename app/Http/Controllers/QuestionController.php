@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ChatGpt;
 use App\Helpers\LogAndFlash;
 use App\Http\Requests\QuestionRequest;
 use App\Models\Answer;
@@ -160,9 +161,90 @@ class QuestionController extends Controller
     public function destroy(Question $question)
     {
         if (Gate::allows('excluir_perguntas')) {
-            $question->delete();
-            LogAndFlash::success('Registro excluido com sucesso!', ['question' => $question]);
-            return redirect()->route('questions.index');
+            DB::beginTransaction();
+            $errors = [];
+
+            try {
+                $question->delete();
+            } catch (\Exception $e) {
+                $errors[] = $e->getMessage();
+            }
+
+            if (count($errors) == 0) {
+                DB::commit();
+                LogAndFlash::success('Registro excluido com sucesso!', $question);
+                return redirect()->back();
+            } else {
+                DB::rollBack();
+                LogAndFlash::error('Erro ao tentar excluir o registro!', $errors);
+                return redirect()->back();
+            }
+        }
+        LogAndFlash::warning('Sem permissão de acesso!');
+        return redirect()->back();
+    }
+
+    public function generateQuestions(Lesson $lesson)
+    {
+        if (Gate::allows('gerar_perguntas')) {
+
+            if ($lesson->questions()->count() > 0) {
+                LogAndFlash::warning('Aula ja possui perguntas!');
+                return redirect()->back();
+            }
+
+            if (!$lesson->transcription) {
+                LogAndFlash::warning('Cadastre uma transcrição antes de gerar perguntas!');
+                return redirect()->back();
+            }
+
+            DB::beginTransaction();
+            $errors = [];
+
+            $gpt = new ChatGpt();
+            $result = $gpt->chat($lesson->transcription);
+
+            if (!$result) {
+                $errors[] = 'Tentativa de gerar perguntas falhou!';
+            }
+
+            try {
+                if ($result) {
+                    $question_json = json_decode($result['choices'][0]['message']['content'], true);
+                    $questions = $question_json['questions'];
+
+                    foreach ($questions as $question) {
+                        $new_question = Question::create([
+                            'lesson_id' => $lesson->id,
+                            'question' => $question['question'],
+                        ]);
+
+                        foreach ($question['answers'] as $answer) {
+                            Answer::create([
+                                'question_id' => $new_question->id,
+                                'answer' => $answer['answer'],
+                                'correct' => $answer['correct'],
+                            ]);
+                        }
+
+                        if ($new_question->answers->count() != 5) {
+                            $errors[] = 'Falha no chat gpt, tente novamente';
+                        }
+                    }
+                }
+            } catch (\Throwable $th) {
+                $errors[] = $th->getMessage();
+            }
+
+            if (count($errors) == 0) {
+                DB::commit();
+                LogAndFlash::success('Perguntas geradas com sucesso!');
+                return redirect()->back();
+            } else {
+                DB::rollBack();
+                LogAndFlash::error('Erro ao tentar gerar perguntas!', $errors);
+                return redirect()->back();
+            }
         }
         LogAndFlash::warning('Sem permissão de acesso!');
         return redirect()->back();

@@ -16,6 +16,7 @@ class Lesson extends Model
         'name',
         'type',
         'url',
+        'transcription',
         'video_id',
         'position',
     ];

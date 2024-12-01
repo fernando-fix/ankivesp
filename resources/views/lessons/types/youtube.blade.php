@@ -37,6 +37,18 @@
     <!-- Botão para mostrar as aulas -->
     @include('lessons.lessons_modal')
 
+    {{-- Botão para gerar perguntas --}}
+    @can('gerar_perguntas')
+        @if ($lesson->questions->count() == 0 && $lesson->transcription)
+            <form action="{{ route('generate-questions', $lesson->id) }}" method="post" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn btn-sm btn-primary" style="width:35px" title="Gerar perguntas">
+                    <i class="fas fa-robot"></i>
+                </button>
+            </form>
+        @endif
+    @endcan
+
     @if ($lesson->course->questions->count() > 0 || count($lesson->questions) > 0)
 
         <!-- Botão para mostrar as perguntas -->

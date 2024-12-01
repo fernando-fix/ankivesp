@@ -24,6 +24,7 @@ class LessonRequest extends FormRequest
         if ($this->routeIs('admin.lessons.store')) {
             return [
                 'name'      => [],
+                'transcription' => ['nullable', 'min:1000', 'max:30000'],
             ];
         }
 
@@ -31,7 +32,23 @@ class LessonRequest extends FormRequest
             $lesson = $this->route('lesson');
             return [
                 'name'     => [],
+                'transcription' => ['nullable', 'min:1000', 'max:30000'],
             ];
         }
+    }
+
+    public function messages()
+    {
+        return [
+            'transcription.min' => 'A transcrição deve ter pelo menos 1000 caracteres',
+            'transcription.max' => 'A transcrição deve ter pelo menos 30000 caracteres',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'transcription' => 'transcrição',
+        ];
     }
 }

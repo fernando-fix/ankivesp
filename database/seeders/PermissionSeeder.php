@@ -50,6 +50,7 @@ class PermissionSeeder extends Seeder
         ['Cadastrar perguntas',      'Permite cadastrar perguntas'],
         ['Editar perguntas',         'Permite editar perguntas'],
         ['Excluir perguntas',        'Permite excluir perguntas'],
+        ['Gerar perguntas',          'Permite gerar perguntas'],
     ];
 
     /**

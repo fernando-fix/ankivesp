@@ -60,7 +60,17 @@
 
                 <div class="d-flex justify-content-between">
                     {{-- Pergunta --}}
-                    <h4>{!! $question->question !!}</h4>
+                    <div>
+                        <small>
+                            <p class="mb-1">
+                                <a href="{{ route('lessons.show', [$question->lesson]) }}" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Aula de referência
+                                </a>
+                            </p>
+                        </small>
+                        <h4>{!! $question->question !!}</h4>
+                    </div>
 
                     {{-- Botão entregar questionário --}}
                     <div class="d-flex flex-column">
