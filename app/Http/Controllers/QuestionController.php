@@ -236,6 +236,10 @@ class QuestionController extends Controller
                 $errors[] = $th->getMessage();
             }
 
+            if (count($errors) > 0) {
+                $errors[] = $questions;
+            }
+
             if (count($errors) == 0) {
                 DB::commit();
                 LogAndFlash::success('Perguntas geradas com sucesso!');
