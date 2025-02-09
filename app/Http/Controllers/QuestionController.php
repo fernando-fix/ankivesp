@@ -237,7 +237,7 @@ class QuestionController extends Controller
             }
 
             if (count($errors) > 0) {
-                $errors[] = $questions;
+                $errors['gpt_result'] = $result;
             }
 
             if (count($errors) == 0) {
