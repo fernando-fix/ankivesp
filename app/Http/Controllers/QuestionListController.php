@@ -8,6 +8,7 @@ use App\Models\Question;
 use App\Models\QuestionList;
 use App\Models\QuestionListItem;
 use App\Models\QuestionUser;
+use App\Models\Watched;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -175,6 +176,17 @@ class QuestionListController extends Controller
         if ($questionListExistsInProgress) {
             LogAndFlash::warning('Voce ja possui uma lista de revisão pendente');
             return redirect()->route('reviews.first-question', $questionListExistsInProgress);
+        }
+
+        // marcar como vis
+        try {
+            $watched = Watched::firstOrCreate([
+                'user_id' => Auth::user()->id,
+                'lesson_id' => $lesson->id,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+        } catch (\Exception $e) {
+            $errors[] = $e->getMessage();
         }
 
         $this->_deleteNotFinishedQuestionLists();

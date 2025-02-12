@@ -84,10 +84,10 @@
                             @csrf
                             <button type="submit" class="dropdown-item">
                                 <i class="fas fa-play-circle text-primary"></i>
-                                Praticar questões desta aula
+                                Praticar questões desta aula e marcar como vista
                                 <span class="badge badge-primary ml-1">
                                     {{ count($lesson->questions) }}
-                                </span>
+                                </span> 
                             </button>
                         </form>
                     @endif
