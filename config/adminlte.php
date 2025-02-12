@@ -400,6 +400,13 @@ return [
             ],
         ],
         [
+            'text' => 'Configurações',
+            'icon' => 'fas fa-fw fa-file',
+            'url' => '/admin/configs',
+            'can' => 'visualizar_configuracoes',
+            'active' => ['admin/configs/*'],
+        ],
+        [
             'text' => 'Logs',
             'icon' => 'fas fa-fw fa-file',
             'url' => '/admin/logs',

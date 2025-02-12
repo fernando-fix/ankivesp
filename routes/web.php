@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\LessonController as AdminLessonController;
 use App\Http\Controllers\Admin\ModuleController as AdminModuleController;
 use App\Http\Controllers\Admin\RoleController as AdminRoleController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionListController;
@@ -53,6 +54,7 @@ Route::prefix('admin')
     ->middleware('auth')
     ->group(function () {
         // Logs
+        Route::resource('configs', ConfigController::class);
         Route::get('logs', [LogViewerController::class, 'index'])->middleware(['can:visualizar_logs']);
         // Users
         Route::get('users/{user}/roles/edit', [AdminUserController::class, 'editRoles'])->name('users.edit_roles');
