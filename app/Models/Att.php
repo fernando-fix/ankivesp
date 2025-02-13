@@ -47,7 +47,7 @@ class Att extends Model
 
     public static function attachFile($file, $folder, $table_name, $table_id, $field_name = 'file',  $allowedExtensions = null)
     {
-        if (!$file->isValid()) {
+        if (!$file || !$file->isValid()) {
             LogAndFlash::error('Arquivo inválido!');
             return false;
         }

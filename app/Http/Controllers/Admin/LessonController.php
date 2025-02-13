@@ -10,6 +10,7 @@ use App\Models\Module;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
+use App\Models\Att;
 
 class LessonController extends Controller
 {
@@ -69,6 +70,15 @@ class LessonController extends Controller
                 $lesson = Lesson::create($data);
             } catch (\Exception $e) {
                 $errors[] = $e->getMessage();
+            }
+
+            if ($data['type'] == 'pdf') {
+                if (isset($data['file']) && count($errors) == 0) {
+                    $att = Att::attachFile($request->file('file'), 'lessons', 'lessons', $lesson->id, 'file');
+                    if (!$att) {
+                        $errors[] = 'Erro ao salvar imagem!';
+                    }
+                }
             }
 
             // Atualizar contagem de módulos do curso

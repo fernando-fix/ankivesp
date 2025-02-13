@@ -15,7 +15,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('admin.lessons.store') }}" id="createLessonForm" method="post">
+                <form action="{{ route('admin.lessons.store') }}" id="createLessonForm" method="post"
+                    enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="modal_trigger" value="#createLessonModal">
                     @include('admin.lessons.form')

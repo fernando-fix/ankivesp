@@ -38,7 +38,15 @@
                                 <td class="align-middle">{{ $lesson->name }}</td>
                                 <td class="align-middle">{{ $lesson->course->name }}</td>
                                 <td class="align-middle">{{ $lesson->module->name }}</td>
-                                <td class="align-middle">{{ $lesson->type }}</td>
+                                <td class="align-middle">
+                                    @if ($lesson->type == 'pdf')
+                                        <a target="_blank"
+                                            href="{{ asset('storage/' . $lesson->pdf->file_path) }}">{{ $lesson->type }}
+                                        </a>
+                                    @else
+                                        {{ $lesson->type }}
+                                    @endif
+                                </td>
                                 <td class="align-middle text-center">
                                     @if ($lesson->questions->count() > 0)
                                         <a href="{{ route('questions.index', ['lesson_id' => $lesson->id]) }}"

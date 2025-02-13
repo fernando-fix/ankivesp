@@ -47,6 +47,11 @@ class Lesson extends Model
         return $this->hasMany(Question::class);
     }
 
+    public function pdf()
+    {
+        return $this->hasOne(Att::class, 'table_id')->where('table_name', 'lessons')->where('field_name', 'file');
+    }
+
     public function nextLesson()
     {
         $nextLesson = $this->module->lessons()->where('position', '>', $this->position)->orderBy('position')->first();

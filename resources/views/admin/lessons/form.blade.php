@@ -78,10 +78,10 @@
             <option value="youtube" {{ old('type', $lesson->type ?? '') == 'youtube' ? 'selected' : '' }}>
                 Vídeo do Youtube
             </option>
-            {{-- <option value="pdf" {{ old('type', $lesson->type ?? '') == 'pdf' ? 'selected' : '' }}>
+            <option value="pdf" {{ old('type', $lesson->type ?? '') == 'pdf' ? 'selected' : '' }}>
                 Arquivo PDF
             </option>
-            <option value="link" {{ old('type', $lesson->type ?? '') == 'link' ? 'selected' : '' }}>
+            {{-- <option value="link" {{ old('type', $lesson->type ?? '') == 'link' ? 'selected' : '' }}>
                 Link externo
             </option> --}}
         </select>
@@ -131,7 +131,7 @@
 </div>
 
 {{-- File (PDF) --}}
-{{-- <div class="form-row">
+<div class="form-row">
     <div class="form-group col-12">
         <label for="file">Arquivo (PDF)</label>
         <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file">
@@ -141,7 +141,7 @@
             </span>
         @enderror
     </div>
-</div> --}}
+</div>
 
 
 @once
