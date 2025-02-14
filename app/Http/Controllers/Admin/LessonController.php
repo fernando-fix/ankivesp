@@ -161,6 +161,15 @@ class LessonController extends Controller
                 $errors[] = $e->getMessage();
             }
 
+            if ($data['type'] == 'pdf') {
+                if (isset($data['file']) && count($errors) == 0) {
+                    $att = Att::attachFile($request->file('file'), 'lessons', 'lessons', $lesson->id, 'file');
+                    if (!$att) {
+                        $errors[] = 'Erro ao salvar imagem!';
+                    }
+                }
+            }
+
             if (count($errors) == 0) {
                 DB::commit();
                 LogAndFlash::success('Registro atualizado com sucesso!', $lesson);

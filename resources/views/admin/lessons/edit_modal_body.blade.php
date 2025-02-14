@@ -10,7 +10,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('admin.lessons.update', $lesson) }}" id="editLessonForm-{{ $lesson->id }}"
+                <form action="{{ route('admin.lessons.update', $lesson) }}" id="editLessonForm-{{ $lesson->id }}" enctype="multipart/form-data"
                     method="post">
                     @csrf
                     @method('put')
