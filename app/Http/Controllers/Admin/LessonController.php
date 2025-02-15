@@ -207,6 +207,14 @@ class LessonController extends Controller
                 $errors[] = $e->getMessage();
             }
 
+            // Deletar arquivo
+            if (count($errors) == 0) {
+                $deleteImage = Att::deleteFile('lessons', $lesson->id, 'file');
+                if (!$deleteImage) {
+                    $errors[] = 'Erro ao remover imagem!';
+                }
+            }
+
             if (count($errors) == 0) {
                 DB::commit();
                 LogAndFlash::success('Registro excluido com sucesso!', $lesson);
