@@ -24,7 +24,7 @@ class ConfigRequest extends FormRequest
         return [
             'name'      => ['required', 'string', 'min:3', 'max:255', 'unique:configs,name,' . $this->route('config')?->id],
             'key'       => ['required', 'string', 'min:3', 'max:255', 'unique:configs,key,' . $this->route('config')?->id],
-            'value'     => ['required', 'string', 'min:3'],
+            'value'     => ['required', 'min:1'],
         ];
     }
 }

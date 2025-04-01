@@ -30,8 +30,8 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        LogAndFlash::warning('Desculpe, o prazo de cadastro foi atingido.', $request->toArray());
-        return redirect()->back();
+        // LogAndFlash::warning('Desculpe, o prazo de cadastro foi atingido.', $request->toArray());
+        // return redirect()->back();
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
