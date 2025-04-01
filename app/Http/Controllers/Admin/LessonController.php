@@ -78,6 +78,8 @@ class LessonController extends Controller
                     if (!$att) {
                         $errors[] = 'Erro ao salvar imagem!';
                     }
+                    $lesson->url = 'Arquivo PDF';
+                    $lesson->save();
                 }
             }
 

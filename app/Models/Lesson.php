@@ -52,6 +52,11 @@ class Lesson extends Model
         return $this->hasOne(Att::class, 'table_id')->where('table_name', 'lessons')->where('field_name', 'file');
     }
 
+    public function att($field_name)
+    {
+        return $this->hasOne(Att::class, 'table_id')->where('table_name', 'lessons')->where('field_name', $field_name);
+    }
+
     public function nextLesson()
     {
         $nextLesson = $this->module->lessons()->where('position', '>', $this->position)->orderBy('position')->first();

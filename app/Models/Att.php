@@ -45,7 +45,20 @@ class Att extends Model
         return $this->morphTo(null, 'table_name', 'table_id');
     }
 
-    public static function attachFile($file, $folder, $table_name, $table_id, $field_name = 'file',  $allowedExtensions = null)
+    /**
+     * Anexa um arquivo a um registro em uma tabela.
+     * Se o registro j  tiver um arquivo anexado, o mesmo ser  substitu do.
+     * Caso o arquivo n o seja v lido, ou a extens o seja inv lida, o m todo ir  retornar false.
+     *
+     * @param UploadedFile $file
+     * @param string $folder
+     * @param string $table_name
+     * @param int $table_id
+     * @param string $field_name
+     * @param array $allowedExtensions
+     * @return bool
+     */
+    public static function attachFile($file, $folder, $table_name, $table_id, $field_name = 'file',  $allowedExtensions = null): bool
     {
         if (!$file || !$file->isValid()) {
             LogAndFlash::error('Arquivo inválido!');
@@ -96,10 +109,10 @@ class Att extends Model
             return false;
         }
 
-        return $att;
+        return true;
     }
 
-    public static function deleteFile($table, $table_id, $field_name)
+    public static function deleteFile(string $table,  $table_id, $field_name): bool
     {
         $att = Att::where('table_name', $table)->where('table_id', $table_id)->where('field_name', $field_name)->first();
         if ($att) {

@@ -98,7 +98,7 @@
     <div class="form-group col-12">
         <label for="url">URL (Youtube ou Link do questionário)</label>
         <input type="text" class="form-control @error('url') is-invalid @enderror" id="url" name="url"
-            value="{{ old('url', $lesson->url ?? '') }}" required autocomplete="off">
+            value="{{ old('url', $lesson->url ?? '') }}" autocomplete="off">
         @error('url')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
