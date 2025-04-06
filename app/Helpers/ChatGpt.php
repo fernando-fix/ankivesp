@@ -24,12 +24,13 @@ class ChatGpt
     {
         $response = $this->client->post('chat/completions', [
             'json' => [
-                'model' => 'gpt-3.5-turbo',
+                // 'model' => 'gpt-3.5-turbo',
+                'model' => 'o3-mini',
                 'messages' => [
                     ['role' => 'system', 'content' => Config::getByKey('prompt_gpt')],
                     ['role' => 'user', 'content' => $message],
                 ],
-                'temperature' => 0.7,
+                // 'temperature' => 0.7,
             ],
         ]);
 
