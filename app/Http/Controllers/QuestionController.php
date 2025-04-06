@@ -188,10 +188,10 @@ class QuestionController extends Controller
     {
         if (Gate::allows('gerar_perguntas')) {
 
-            if ($lesson->questions()->count() > 0) {
-                LogAndFlash::warning('Aula ja possui perguntas!');
-                return redirect()->back();
-            }
+            // if ($lesson->questions()->count() > 0) {
+            //     LogAndFlash::warning('Aula ja possui perguntas!');
+            //     return redirect()->back();
+            // }
 
             if (!$lesson->transcription) {
                 LogAndFlash::warning('Cadastre uma transcrição antes de gerar perguntas!');
@@ -202,7 +202,12 @@ class QuestionController extends Controller
             $errors = [];
 
             $gpt = new ChatGpt();
-            $result = $gpt->chat($lesson->transcription);
+
+            $prompt = [
+                'perguntas_ja_cadastradas' => $lesson->questions()->with('answers')->get()->toArray(),
+                'transcricao' => $lesson->transcription
+            ];
+            $result = $gpt->chat(json_encode($prompt));
 
             if (!$result) {
                 $errors[] = 'Tentativa de gerar perguntas falhou!';
