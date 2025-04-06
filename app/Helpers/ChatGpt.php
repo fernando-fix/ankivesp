@@ -25,7 +25,7 @@ class ChatGpt
         $response = $this->client->post('chat/completions', [
             'json' => [
                 // 'model' => 'gpt-3.5-turbo',
-                'model' => 'o3-mini',
+                'model' => 'gpt-4o-mini',
                 'messages' => [
                     ['role' => 'system', 'content' => Config::getByKey('prompt_gpt')],
                     ['role' => 'user', 'content' => $message],
