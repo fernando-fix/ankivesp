@@ -71,6 +71,10 @@ Route::prefix('admin')
         Route::resource('modules', AdminModuleController::class);
         Route::resource('lessons', AdminLessonController::class);
 
+        // Reorder
+        Route::post('modules/reorder', [AdminModuleController::class, 'reorder'])->name('modules.reorder');
+        Route::post('lessons/reorder', [AdminLessonController::class, 'reorder'])->name('lessons.reorder');
+
         // Updates
         Route::get('updates', [UpdateController::class, 'index'])->name('updates.index');
 

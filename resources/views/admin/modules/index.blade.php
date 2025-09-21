@@ -48,7 +48,10 @@
                                             <ul class="dropdown-menu dropdown-menu-right">
                                                 @can('editar_modulos')
                                                     <li>
-                                                        @include('admin.modules.edit_modal_trigger', $module)
+                                                        <a class="dropdown-item" href="{{ route('admin.modules.edit', $module) }}">
+                                                            <i class="fas fa-edit text-info"></i>
+                                                            Editar
+                                                        </a>
                                                     </li>
                                                 @endcan
                                                 @can('reorganizar_aulas')
@@ -77,9 +80,6 @@
                                         </div>
                                     @endcanany
                                 </td>
-                                @can('editar_modulos')
-                                    @include('admin.modules.edit_modal_body', $module)
-                                @endcan
                             </tr>
                         @empty
                             <tr>

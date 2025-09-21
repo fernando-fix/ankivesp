@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Models\Att;
+use App\Models\Module;
 
 class CourseController extends Controller
 {
@@ -93,7 +94,9 @@ class CourseController extends Controller
     public function edit(Course $course)
     {
         if (Gate::allows('editar_cursos')) {
-            return redirect()->back();
+            $courses = Course::all();
+            $modules = Module::where('course_id', $course->id)->orderBy('position')->get();
+            return view('admin.courses.edit', compact('course', 'modules', 'courses'));
         }
         LogAndFlash::warning('Sem permissão de acesso!');
         return redirect()->back();

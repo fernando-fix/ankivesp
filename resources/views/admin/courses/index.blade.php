@@ -55,19 +55,12 @@
                                                 data-toggle="dropdown" title="Mais Opções">
                                                 <i class="fas fa-bars"></i>
                                             </button>
-                                            <ul class="dropdown-menu dropdown-menu-right">
+                                            <ul class="dropdown-menu dropdown-menu-right">                                                
                                                 @can('editar_cursos')
                                                     <li>
-                                                        @include(
-                                                            'admin.courses.edit_modal_trigger',
-                                                            $course)
-                                                    </li>
-                                                @endcan
-                                                @can('reorganizar_modulos')
-                                                    <li>
-                                                        <a class="dropdown-item" href="#">
-                                                            <i class="fas fa-sort-numeric-up-alt text-info"></i>
-                                                            Reorganizar módulos
+                                                        <a class="dropdown-item" href="{{ route('admin.courses.edit', $course) }}">
+                                                            <i class="fas fa-edit text-info"></i>
+                                                            Editar
                                                         </a>
                                                     </li>
                                                 @endcan
@@ -76,7 +69,7 @@
                                                         <form action="{{ route('admin.courses.destroy', $course) }}" method="post">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="dropdown-item" href="#"
+                                                            <button type="submit" class="dropdown-item"
                                                                 title="Excluir"
                                                                 onclick="return confirm('Deseja realmente excluir este registro?');">
                                                                 <i class="fas fa-trash text-danger"></i>
@@ -89,9 +82,6 @@
                                         </div>
                                     @endcanany
                                 </td>
-                                @can('editar_cursos')
-                                    @include('admin.courses.edit_modal_body', $course)
-                                @endcan
                             </tr>
                         @empty
                             <tr>

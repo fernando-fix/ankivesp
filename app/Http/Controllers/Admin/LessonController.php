@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Models\Att;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class LessonController extends Controller
 {
@@ -25,7 +27,7 @@ class LessonController extends Controller
             $courses = Course::get();
             $modules = Module::get();
             $lessons = Lesson::paginate($this->pagination)->withQueryString();
-            return view('admin/lessons.index', compact('courses', 'modules', 'lessons'));
+            return view('admin.lessons.index', compact('courses', 'modules', 'lessons'));
         }
         LogAndFlash::warning('Sem permissão de acesso!');
         return redirect()->back();
@@ -94,7 +96,7 @@ class LessonController extends Controller
             if (count($errors) == 0) {
                 DB::commit();
                 LogAndFlash::success('Registro criado com sucesso!', $lesson);
-                return redirect()->route('admin.lessons.index');
+                return redirect()->back();
             } else {
                 DB::rollBack();
                 LogAndFlash::error('Erro ao tentar criar o registro!', $errors);
@@ -239,5 +241,34 @@ class LessonController extends Controller
         }
         LogAndFlash::warning('Sem permissão de acesso!');
         return response()->json(null, 403);
+    }
+
+    public function reorder(Request $request): JsonResponse
+    {
+        $ids = $request->input('ids');
+        DB::beginTransaction();
+        $errors = [];
+        try {
+            foreach ($ids as $key => $id) {
+                Lesson::where('id', $id)->update(['position' => $key]);
+            }
+        } catch (\Exception $e) {
+            $errors[] = $e->getMessage();
+        }
+        if (count($errors) == 0) {
+            DB::commit();
+            LogAndFlash::success('Ordem alterada com sucesso!');
+            return response()->json([
+                'success' => true,
+                'message' => 'Ordem alterada com sucesso'
+            ]);
+        } else {
+            DB::rollBack();
+            LogAndFlash::error('Erro ao tentar alterar a ordem!', $errors);
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao tentar alterar a ordem!'
+            ]);
+        }
     }
 }

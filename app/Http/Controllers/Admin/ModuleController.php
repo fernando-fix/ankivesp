@@ -9,6 +9,9 @@ use App\Models\Module;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
+use App\Models\Lesson;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ModuleController extends Controller
 {
@@ -21,7 +24,7 @@ class ModuleController extends Controller
         if (Gate::allows('visualizar_modulos')) {
             $courses = Course::get();
             $modules = Module::with('course')->paginate($this->pagination);
-            return view('admin/modules.index', compact('modules', 'courses'));
+            return view('admin.modules.index', compact('modules', 'courses'));
         }
         LogAndFlash::warning('Sem permissão de acesso!');
         return redirect()->back();
@@ -69,7 +72,7 @@ class ModuleController extends Controller
             if (count($errors) == 0) {
                 DB::commit();
                 LogAndFlash::success('Registro criado com sucesso!', $module);
-                return redirect()->route('admin.modules.index');
+                return redirect()->back();
             } else {
                 DB::rollBack();
                 LogAndFlash::error('Erro ao tentar criar o registro!', $errors);
@@ -98,7 +101,10 @@ class ModuleController extends Controller
     public function edit(Module $module)
     {
         if (Gate::allows('editar_modulos')) {
-            return redirect()->back();
+            $courses = Course::all();
+            $lessons = Lesson::where('module_id', $module->id)->orderBy('position', 'asc')->get();
+            $course = $module->course;
+            return view('admin.modules.edit', compact('module', 'courses', 'lessons', 'course'));
         }
         LogAndFlash::warning('Sem permissão de acesso!');
         return redirect()->back();
@@ -187,5 +193,34 @@ class ModuleController extends Controller
         }
         LogAndFlash::warning('Sem permissão de acesso!');
         return response()->json(null, 403);
+    }
+
+    public function reorder(Request $request): JsonResponse
+    {
+        $ids = $request->input('ids');
+        DB::beginTransaction();
+        $errors = [];
+        try {
+            foreach ($ids as $key => $id) {
+                Module::where('id', $id)->update(['position' => $key]);
+            }
+        } catch (\Exception $e) {
+            $errors[] = $e->getMessage();
+        }
+        if (count($errors) == 0) {
+            DB::commit();
+            LogAndFlash::success('Ordem alterada com sucesso!');
+            return response()->json([
+                'success' => true,
+                'message' => 'Ordem alterada com sucesso'
+            ]);
+        } else {
+            DB::rollBack();
+            LogAndFlash::error('Erro ao tentar alterar a ordem!', $errors);
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao tentar alterar a ordem!'
+            ]);
+        }
     }
 }
