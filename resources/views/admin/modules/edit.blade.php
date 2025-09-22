@@ -67,6 +67,16 @@
                                                         <i class="fas fa-bars"></i>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-right">
+                                                        @can('visualizar_aulas')
+                                                            <li>
+                                                                <a type="button" class="dropdown-item"
+                                                                    href="{{ route('lessons.show', $lesson) }}" title="Visualizar"
+                                                                    target="_blank">
+                                                                    <i class="fas fa-eye text-info"></i>
+                                                                    Visualizar
+                                                                </a>
+                                                            </li>
+                                                        @endcan
                                                         @can('editar_aulas')
                                                             <li>
                                                                 @include(

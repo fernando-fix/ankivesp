@@ -212,10 +212,10 @@ class LessonController extends Controller
             }
 
             // Deletar arquivo
-            if (count($errors) == 0) {
-                $deleteImage = Att::deleteFile('lessons', $lesson->id, 'file');
-                if (!$deleteImage) {
-                    $errors[] = 'Erro ao remover imagem!';
+            if ($lesson->pdf && count($errors) == 0) {
+                $deleteFile = Att::deleteFile('lessons', $lesson->id, 'file');
+                if (!$deleteFile) {
+                    $errors[] = 'Erro ao remover arquivo!';
                 }
             }
 
