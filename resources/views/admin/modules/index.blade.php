@@ -48,17 +48,15 @@
                                             <ul class="dropdown-menu dropdown-menu-right">
                                                 @can('editar_modulos')
                                                     <li>
+                                                        @include(
+                                                            'admin.modules.edit_modal_trigger',
+                                                            $module)
+                                                    </li>
+
+                                                    <li>
                                                         <a class="dropdown-item" href="{{ route('admin.modules.edit', $module) }}">
                                                             <i class="fas fa-edit text-info"></i>
                                                             Editar
-                                                        </a>
-                                                    </li>
-                                                @endcan
-                                                @can('reorganizar_aulas')
-                                                    <li>
-                                                        <a class="dropdown-item" href="#">
-                                                            <i class="fas fa-sort-numeric-up-alt text-info"></i>
-                                                            Reorganizar aulas
                                                         </a>
                                                     </li>
                                                 @endcan
@@ -81,6 +79,11 @@
                                     @endcanany
                                 </td>
                             </tr>
+                            @can('editar_modulos')
+                                @include(
+                                    'admin.modules.edit_modal_body',
+                                    $module)
+                            @endcan
                         @empty
                             <tr>
                                 <td class="align-middle" colspan="100%" class="text-center">Nenhum registro encontrado</td>

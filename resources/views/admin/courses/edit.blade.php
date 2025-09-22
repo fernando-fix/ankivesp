@@ -56,7 +56,7 @@
                                     <th scope="col" width=1>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="sortable-table" data-route="{{ route('admin.modules.reorder', $course) }}">
+                            <tbody id="sortable-table" data-route="{{ secure_url(route('admin.modules.reorder', $course)) }}">
                                 @forelse ($modules as $module)
                                     <tr class="sortable-item" data-id="{{ $module->id }}" style="cursor: move;">
                                         <td class="align-middle">
@@ -79,6 +79,13 @@
                                                                 @include(
                                                                     'admin.modules.edit_modal_trigger',
                                                                     $module)
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{ route('admin.modules.edit', $module) }}"
+                                                                    class="dropdown-item" title="Editar">
+                                                                    <i class="fas fa-edit text-info"></i>
+                                                                    Editar
+                                                                </a>
                                                             </li>
                                                         @endcan
                                                         @can('excluir_modulos')

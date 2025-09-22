@@ -51,7 +51,7 @@
                                     <th scope="col" width=1>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="sortable-table" data-route="{{ route('admin.lessons.reorder', $module) }}">
+                            <tbody id="sortable-table" data-route="{{ secure_url(route('admin.lessons.reorder', $module)) }}">
                                 @forelse ($lessons as $lesson)
                                     <tr class="sortable-item" data-id="{{ $lesson->id }}" style="cursor: move;">
                                         <td class="align-middle">
@@ -60,21 +60,21 @@
                                         <td class="align-middle">{{ $lesson->name }}</td>
                                         <td class="align-middle">{{ $lesson->questions_count }}</td>
                                         <td class="align-middle" style="white-space: nowrap;">
-                                            @canany(['excluir_modulos', 'editar_modulos'])
+                                            @canany(['excluir_aulas', 'editar_aulas'])
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-sm btn-primary dropdown-toggle"
                                                         data-toggle="dropdown" title="Mais Opções">
                                                         <i class="fas fa-bars"></i>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-right">
-                                                        @can('editar_modulos')
+                                                        @can('editar_aulas')
                                                             <li>
                                                                 @include(
                                                                     'admin.lessons.edit_modal_trigger',
                                                                     $lesson)
                                                             </li>
                                                         @endcan
-                                                        @can('excluir_modulos')
+                                                        @can('excluir_aulas')
                                                             <li>
                                                                 <form action="{{ route('admin.lessons.destroy', $lesson) }}"
                                                                     method="post">
