@@ -134,7 +134,7 @@
                     })
                 }).then(result => result.json()).then(data => {
                     if (data.success) {
-                        // location.reload();
+                        location.reload();
                     } else {
                         console.error(data.message);
                     }
