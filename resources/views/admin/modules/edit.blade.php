@@ -51,7 +51,7 @@
                                     <th scope="col" width=1>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="sortable-table" data-route="{{ route('admin.lessons.reorder', $module, true) }}">
+                            <tbody id="sortable-table" data-route="{{ route('admin.lessons.reorder', $module) }}">
                                 @forelse ($lessons as $lesson)
                                     <tr class="sortable-item" data-id="{{ $lesson->id }}" style="cursor: move;">
                                         <td class="align-middle">
