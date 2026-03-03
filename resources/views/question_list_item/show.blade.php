@@ -21,19 +21,20 @@
                                 @if ($questionListItem->question_id == $question->id) href="#"
                                 @else
                                 href="{{ route('reviews.answer-questions', [$questionList, $questionListItem->question]) }}" @endif>
-                                @if ($questionListItem->answer_id != null)
-                                    @if ($questionListItem->question_id == $question->id)
-                                        <span class="mt-1 btn btn-success px-3 py-1">{{ $key + 1 }}</span>
-                                    @else
-                                        <span class="mt-1 btn btn-primary px-3 py-1">{{ $key + 1 }}</span>
-                                    @endif
-                                @else
-                                    @if ($questionListItem->question_id == $question->id)
-                                        <span class="mt-1 btn btn-success px-3 py-1">{{ $key + 1 }}</span>
-                                    @else
-                                        <span class="mt-1 btn btn-secondary px-3 py-1">{{ $key + 1 }}</span>
-                                    @endif
-                                @endif
+                                <div class="d-inline-flex flex-column align-items-center flex-1">
+
+                                    <span
+                                        class="mb-1 text-success"
+                                        style="font-size: 2rem; height: 2rem; visibility: {{ $questionListItem->question_id == $question->id ? 'visible' : 'hidden' }}">
+                                        ▼
+                                    </span>
+
+                                    <span
+                                        class="mt-1 btn {{ $questionListItem->answer_id != null ? 'btn-primary' : 'btn-secondary' }} px-3 py-1">
+                                        {{ $key + 1 }}
+                                    </span>
+
+                                </div>
                             </a>
                         @endforeach
                         <div class="mt-2 h4">
@@ -52,7 +53,6 @@
                         <h2>Legenda:</h2>
                         <span class="badge badge-primary px-2 py-1">Respondido</span> <br>
                         <span class="badge badge-secondary px-2 py-1">Não respondido</span><br>
-                        <span class="badge badge-success px-2 py-1">Pergunta atual</span>
                     </div>
                 </div>
 
